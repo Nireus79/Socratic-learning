@@ -53,7 +53,7 @@ class InteractionLogger:
         duration_ms: float = 0.0,
         success: bool = True,
         error_message: Optional[str] = None,
-        tags: Optional[list] = None,
+        tags: Optional[list[str]] = None,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> Interaction:
         """Log an interaction to the store."""
@@ -94,7 +94,7 @@ class InteractionLogger:
         session_id: str,
         limit: int = 100,
         offset: int = 0,
-    ) -> list:
+    ) -> list[Interaction]:
         """Get all interactions in a session."""
         return self.store.list_interactions(
             session_id=session_id,

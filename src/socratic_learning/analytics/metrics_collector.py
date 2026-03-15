@@ -1,7 +1,7 @@
 """Metrics collection and aggregation."""
 
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Any, Optional
 
 from socratic_learning.core import Metric
 from socratic_learning.storage.base import BaseLearningStore
@@ -72,12 +72,9 @@ class MetricsCollector:
         feedback_interactions = [i for i in interactions if i.user_rating is not None]
         if feedback_interactions:
             metric.total_feedback_count = len(feedback_interactions)
-            metric.positive_feedback_count = sum(
-                1 for i in feedback_interactions if i.user_rating >= 4
-            )
-            metric.avg_rating = sum(i.user_rating for i in feedback_interactions) / len(
-                feedback_interactions
-            )
+            ratings: list[int] = [i.user_rating for i in feedback_interactions]  # type: ignore
+            metric.positive_feedback_count = sum(1 for r in ratings if r >= 4)
+            metric.avg_rating = sum(ratings) / len(ratings)
 
         return metric
 
@@ -107,7 +104,7 @@ class MetricsCollector:
         self,
         metric1: Metric,
         metric2: Metric,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Compare two metrics and return improvements."""
         return {
             "success_rate_change": metric2.success_rate - metric1.success_rate,

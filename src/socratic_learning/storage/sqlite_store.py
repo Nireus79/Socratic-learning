@@ -567,7 +567,7 @@ class SQLiteLearningStore(BaseLearningStore):
 
     # Helper methods to convert rows to objects
     @staticmethod
-    def _row_to_interaction(row: tuple) -> Interaction:
+    def _row_to_interaction(row: tuple[Any, ...]) -> Interaction:
         """Convert database row to Interaction object."""
         return Interaction(
             interaction_id=row[0],
@@ -592,7 +592,7 @@ class SQLiteLearningStore(BaseLearningStore):
         )
 
     @staticmethod
-    def _row_to_pattern(row: tuple) -> Pattern:
+    def _row_to_pattern(row: tuple[Any, ...]) -> Pattern:
         """Convert database row to Pattern object."""
         return Pattern(
             pattern_id=row[0],
@@ -611,7 +611,7 @@ class SQLiteLearningStore(BaseLearningStore):
         )
 
     @staticmethod
-    def _row_to_metric(row: tuple) -> Metric:
+    def _row_to_metric(row: tuple[Any, ...]) -> Metric:
         """Convert database row to Metric object."""
         return Metric(
             metric_id=row[0],
@@ -636,7 +636,7 @@ class SQLiteLearningStore(BaseLearningStore):
         )
 
     @staticmethod
-    def _row_to_recommendation(row: tuple) -> Recommendation:
+    def _row_to_recommendation(row: tuple[Any, ...]) -> Recommendation:
         """Convert database row to Recommendation object."""
         return Recommendation(
             recommendation_id=row[0],

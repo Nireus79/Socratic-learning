@@ -130,8 +130,9 @@ class PatternDetector:
         if len(feedback_interactions) < 5:
             return []
 
-        avg_rating = sum(i.user_rating for i in feedback_interactions) / len(feedback_interactions)
-        positive_count = sum(1 for i in feedback_interactions if i.user_rating >= 4)
+        ratings: list[int] = [i.user_rating for i in feedback_interactions]  # type: ignore
+        avg_rating = sum(ratings) / len(ratings)
+        positive_count = sum(1 for i in feedback_interactions if (i.user_rating or 0) >= 4)
         positive_rate = positive_count / len(feedback_interactions)
 
         patterns = []
