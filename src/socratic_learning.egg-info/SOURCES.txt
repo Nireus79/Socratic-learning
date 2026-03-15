@@ -1,0 +1,17 @@
+LICENSE
+README.md
+pyproject.toml
+src/socratic_learning/__init__.py
+src/socratic_learning.egg-info/PKG-INFO
+src/socratic_learning.egg-info/SOURCES.txt
+src/socratic_learning.egg-info/dependency_links.txt
+src/socratic_learning.egg-info/requires.txt
+src/socratic_learning.egg-info/top_level.txt
+src/socratic_learning/core/__init__.py
+src/socratic_learning/core/interaction.py
+src/socratic_learning/core/metric.py
+src/socratic_learning/core/pattern.py
+src/socratic_learning/core/recommendation.py
+src/socratic_learning/storage/__init__.py
+src/socratic_learning/storage/base.py
+src/socratic_learning/storage/sqlite_store.py
