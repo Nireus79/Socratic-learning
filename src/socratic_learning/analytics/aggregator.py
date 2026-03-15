@@ -45,11 +45,7 @@ class DataAggregator:
 
         feedback_items = [i for i in interactions if i.user_rating is not None]
         ratings1: list[int] = [i.user_rating for i in feedback_items]  # type: ignore
-        avg_rating = (
-            sum(ratings1) / len(ratings1)
-            if ratings1
-            else None
-        )
+        avg_rating = sum(ratings1) / len(ratings1) if ratings1 else None
 
         return {
             "agent_name": agent_name,
@@ -96,11 +92,7 @@ class DataAggregator:
 
         feedback_items = [i for i in interactions if i.user_rating is not None]
         ratings2: list[int] = [i.user_rating for i in feedback_items]  # type: ignore
-        avg_rating = (
-            sum(ratings2) / len(ratings2)
-            if ratings2
-            else None
-        )
+        avg_rating = sum(ratings2) / len(ratings2) if ratings2 else None
 
         return {
             "session_id": session_id,
@@ -145,11 +137,7 @@ class DataAggregator:
 
         feedback_items = [i for i in interactions if i.user_rating is not None]
         ratings3: list[int] = [i.user_rating for i in feedback_items]  # type: ignore
-        avg_rating = (
-            sum(ratings3) / len(ratings3)
-            if ratings3
-            else None
-        )
+        avg_rating = sum(ratings3) / len(ratings3) if ratings3 else None
 
         return {
             "total_interactions": len(interactions),
@@ -268,11 +256,7 @@ class DataAggregator:
             successful = sum(1 for i in agent_interactions if i.success)
             feedback_items = [i for i in agent_interactions if i.user_rating is not None]
             ratings_list: list[int] = [i.user_rating for i in feedback_items]
-            avg_rating = (
-                sum(ratings_list) / len(ratings_list)
-                if ratings_list
-                else None
-            )
+            avg_rating = sum(ratings_list) / len(ratings_list) if ratings_list else None
 
             agent_summaries.append(
                 {

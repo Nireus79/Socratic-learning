@@ -127,9 +127,7 @@ class TestFeedbackCollector:
         )
 
         # No feedback yet
-        result = feedback_collector.get_interaction_feedback(
-            interaction.interaction_id
-        )
+        result = feedback_collector.get_interaction_feedback(interaction.interaction_id)
         assert result is None
 
         # Add feedback
@@ -139,9 +137,7 @@ class TestFeedbackCollector:
             feedback="Good!",
         )
 
-        result = feedback_collector.get_interaction_feedback(
-            interaction.interaction_id
-        )
+        result = feedback_collector.get_interaction_feedback(interaction.interaction_id)
         assert result is not None
         assert result["rating"] == 4
         assert result["feedback"] == "Good!"
@@ -162,9 +158,7 @@ class TestFeedbackCollector:
                 feedback=f"Feedback {i}",
             )
 
-        feedback_items = feedback_collector.get_session_feedback(
-            session.session_id
-        )
+        feedback_items = feedback_collector.get_session_feedback(session.session_id)
         assert len(feedback_items) == 3
 
     def test_get_agent_feedback(self, logger, feedback_collector):

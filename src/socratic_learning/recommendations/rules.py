@@ -194,7 +194,7 @@ class RecommendationRules:
     def from_metric(
         metric: Metric,
         agent_name: str,
-    ) -> list[Recommendation] | None:
+    ) -> Optional[list[Recommendation]]:
         """Generate recommendations from metrics alone.
 
         Args:

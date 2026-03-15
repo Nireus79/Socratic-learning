@@ -48,9 +48,7 @@ def finetuning_exporter(store):
 class TestRecommendationEngine:
     """Test RecommendationEngine."""
 
-    def test_generate_recommendations_from_errors(
-        self, logger, recommendation_engine
-    ):
+    def test_generate_recommendations_from_errors(self, logger, recommendation_engine):
         """Test generating recommendations from error patterns."""
         session = logger.create_session()
 
@@ -64,14 +62,10 @@ class TestRecommendationEngine:
                 success=i < 5,  # 75% error rate
             )
 
-        recommendations = recommendation_engine.generate_recommendations(
-            agent_name="Agent"
-        )
+        recommendations = recommendation_engine.generate_recommendations(agent_name="Agent")
         assert len(recommendations) > 0
 
-    def test_generate_recommendations_from_feedback(
-        self, logger, recommendation_engine
-    ):
+    def test_generate_recommendations_from_feedback(self, logger, recommendation_engine):
         """Test generating recommendations from feedback patterns."""
         session = logger.create_session()
 
@@ -85,14 +79,10 @@ class TestRecommendationEngine:
             )
             logger.add_feedback(interaction.interaction_id, rating=2, feedback="Poor")
 
-        recommendations = recommendation_engine.generate_recommendations(
-            agent_name="Agent"
-        )
+        recommendations = recommendation_engine.generate_recommendations(agent_name="Agent")
         assert len(recommendations) > 0
 
-    def test_get_high_priority_recommendations(
-        self, logger, recommendation_engine
-    ):
+    def test_get_high_priority_recommendations(self, logger, recommendation_engine):
         """Test getting high priority recommendations."""
         session = logger.create_session()
         for i in range(20):
@@ -105,14 +95,10 @@ class TestRecommendationEngine:
             )
 
         recommendation_engine.generate_recommendations(agent_name="Agent")
-        high_priority = recommendation_engine.get_high_priority_recommendations(
-            agent_name="Agent"
-        )
+        high_priority = recommendation_engine.get_high_priority_recommendations(agent_name="Agent")
         assert all(r.priority == "high" for r in high_priority)
 
-    def test_mark_recommendation_applied(
-        self, logger, recommendation_engine
-    ):
+    def test_mark_recommendation_applied(self, logger, recommendation_engine):
         """Test marking recommendation as applied."""
         session = logger.create_session()
         for i in range(20):
@@ -124,9 +110,7 @@ class TestRecommendationEngine:
                 success=i < 5,
             )
 
-        recommendations = recommendation_engine.generate_recommendations(
-            agent_name="Agent"
-        )
+        recommendations = recommendation_engine.generate_recommendations(agent_name="Agent")
         if recommendations:
             updated = recommendation_engine.mark_recommendation_applied(
                 recommendations[0].recommendation_id
@@ -135,9 +119,7 @@ class TestRecommendationEngine:
             assert updated.applied is True
             assert updated.applied_at is not None
 
-    def test_set_recommendation_effectiveness(
-        self, logger, recommendation_engine
-    ):
+    def test_set_recommendation_effectiveness(self, logger, recommendation_engine):
         """Test setting effectiveness score."""
         session = logger.create_session()
         for i in range(20):
@@ -149,9 +131,7 @@ class TestRecommendationEngine:
                 success=i < 5,
             )
 
-        recommendations = recommendation_engine.generate_recommendations(
-            agent_name="Agent"
-        )
+        recommendations = recommendation_engine.generate_recommendations(agent_name="Agent")
         if recommendations:
             updated = recommendation_engine.set_recommendation_effectiveness(
                 recommendations[0].recommendation_id,
@@ -184,19 +164,13 @@ class TestRecommendationEngine:
                 success=i < 5,
             )
 
-        recommendations = recommendation_engine.generate_recommendations(
-            agent_name="Agent"
-        )
+        recommendations = recommendation_engine.generate_recommendations(agent_name="Agent")
 
         # Mark some as applied
         if recommendations:
-            recommendation_engine.mark_recommendation_applied(
-                recommendations[0].recommendation_id
-            )
+            recommendation_engine.mark_recommendation_applied(recommendations[0].recommendation_id)
 
-        applied = recommendation_engine.get_applied_recommendations(
-            agent_name="Agent"
-        )
+        applied = recommendation_engine.get_applied_recommendations(agent_name="Agent")
         assert all(r.applied is True for r in applied)
 
     def test_get_recommendation_summary(self, logger, recommendation_engine):
@@ -212,9 +186,7 @@ class TestRecommendationEngine:
             )
 
         recommendation_engine.generate_recommendations(agent_name="Agent")
-        summary = recommendation_engine.get_recommendation_summary(
-            agent_name="Agent"
-        )
+        summary = recommendation_engine.get_recommendation_summary(agent_name="Agent")
 
         assert "total_recommendations" in summary
         assert "by_priority" in summary
@@ -252,9 +224,7 @@ class TestFinetuningExporter:
             lines = f.readlines()
         assert len(lines) == 5
 
-    def test_export_jsonl_with_rating_filter(
-        self, logger, finetuning_exporter, tmp_path
-    ):
+    def test_export_jsonl_with_rating_filter(self, logger, finetuning_exporter, tmp_path):
         """Test exporting only high-rated interactions."""
         session = logger.create_session()
         for i in range(5):
@@ -356,9 +326,7 @@ class TestFinetuningExporter:
         assert summary["rated_interactions"] == 3
         assert summary["rating_coverage"] == 60.0
 
-    def test_export_format_anthropic(
-        self, logger, finetuning_exporter, tmp_path
-    ):
+    def test_export_format_anthropic(self, logger, finetuning_exporter, tmp_path):
         """Test exporting in Anthropic format."""
         session = logger.create_session()
         interaction = logger.log_interaction(
@@ -378,6 +346,7 @@ class TestFinetuningExporter:
 
         with open(output_file) as f:
             import json
+
             record = json.loads(f.readline())
         assert "prompt" in record
         assert "completion" in record
