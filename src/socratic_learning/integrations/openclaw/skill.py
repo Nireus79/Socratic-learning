@@ -2,15 +2,12 @@
 
 from typing import Any, Dict, List, Optional
 
-from socratic_learning.core.interaction import Interaction
-from socratic_learning.core.metric import Metric
-from socratic_learning.core.pattern import Pattern
-from socratic_learning.core.recommendation import Recommendation
-from socratic_learning.tracking.logger import InteractionLogger
-from socratic_learning.tracking.session import Session
 from socratic_learning.analytics.metrics_collector import MetricsCollector
 from socratic_learning.analytics.pattern_detector import PatternDetector
+from socratic_learning.core.interaction import Interaction
 from socratic_learning.recommendations.engine import RecommendationEngine
+from socratic_learning.tracking.logger import InteractionLogger
+from socratic_learning.tracking.session import Session
 
 
 class SocraticLearningSkill:

@@ -1,11 +1,11 @@
 """LangChain tool integration for Socratic Learning."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Union
 
-from socratic_learning.tracking.logger import InteractionLogger
 from socratic_learning.analytics.metrics_collector import MetricsCollector
 from socratic_learning.analytics.pattern_detector import PatternDetector
 from socratic_learning.recommendations.engine import RecommendationEngine
+from socratic_learning.tracking.logger import InteractionLogger
 
 
 class LearningTool:

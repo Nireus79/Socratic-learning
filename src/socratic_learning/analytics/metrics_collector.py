@@ -1,6 +1,6 @@
 """Metrics collection and aggregation."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
 
 from socratic_learning.core import Metric

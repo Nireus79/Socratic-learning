@@ -32,9 +32,9 @@ from socratic_learning.exceptions import (
     StorageNotFoundError,
     StorageOperationError,
 )
+from socratic_learning.integrations import LearningTool, SocraticLearningSkill
 from socratic_learning.storage import BaseLearningStore, SQLiteLearningStore
 from socratic_learning.tracking import InteractionLogger, Session
-from socratic_learning.integrations import LearningTool, SocraticLearningSkill
 
 __version__ = "0.1.0"
 

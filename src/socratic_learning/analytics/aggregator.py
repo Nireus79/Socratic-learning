@@ -1,6 +1,6 @@
 """Data aggregation and summarization."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
 
 from socratic_learning.storage.base import BaseLearningStore
