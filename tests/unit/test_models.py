@@ -1,7 +1,7 @@
 """Unit tests for core models."""
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
 
@@ -26,7 +26,7 @@ class TestInteraction:
 
     def test_interaction_with_timestamps(self):
         """Test interaction with custom timestamps."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         interaction = Interaction(
             session_id="session_456",
             agent_name="TestAgent",
@@ -300,7 +300,7 @@ class TestRecommendation:
         rec = Recommendation(
             title="Test",
             applied=True,
-            applied_at=datetime.utcnow(),
+            applied_at=datetime.now(timezone.utc),
             effectiveness_score=0.85,
         )
 
@@ -310,7 +310,7 @@ class TestRecommendation:
 
     def test_recommendation_serialization(self):
         """Test recommendation to_dict and from_dict."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         original = Recommendation(
             recommendation_type="model_change",
             priority="medium",

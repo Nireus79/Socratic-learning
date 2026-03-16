@@ -1,7 +1,7 @@
 """Unit tests for tracking components."""
 
 import tempfile
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -58,7 +58,7 @@ class TestSession:
 
     def test_session_duration(self):
         """Test session duration calculation."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         session = Session(created_at=now)
         session.created_at = now - timedelta(hours=1)
         session.ended_at = now

@@ -35,8 +35,8 @@ class MetricsCollector:
             return Metric(
                 agent_name=agent_name,
                 session_id=session_id,
-                time_period_start=start_time or datetime.utcnow(),
-                time_period_end=end_time or datetime.utcnow(),
+                time_period_start=start_time or datetime.now(timezone.utc),
+                time_period_end=end_time or datetime.now(timezone.utc),
             )
 
         # Calculate metrics

@@ -1,7 +1,7 @@
 """Unit tests for SQLite storage backend."""
 
 import tempfile
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -118,7 +118,7 @@ class TestInteractionStorage:
 
     def test_list_interactions_with_time_range(self, store):
         """Test filtering interactions by time range."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
         # Create interaction in the past
         interaction_past = Interaction(
@@ -435,7 +435,7 @@ class TestRecommendationStorage:
 
         # Mark as applied
         rec.applied = True
-        rec.applied_at = datetime.utcnow()
+        rec.applied_at = datetime.now(timezone.utc)
         rec.effectiveness_score = 0.9
 
         updated = store.update_recommendation(rec)

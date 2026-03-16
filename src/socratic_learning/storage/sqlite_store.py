@@ -262,7 +262,7 @@ class SQLiteLearningStore(BaseLearningStore):
             SET user_rating = ?, user_feedback = ?, feedback_timestamp = ?
             WHERE interaction_id = ?
         """,
-            (rating, feedback, datetime.utcnow().isoformat(), interaction_id),
+            (rating, feedback, datetime.now(timezone.utc).isoformat(), interaction_id),
         )
 
         conn.commit()

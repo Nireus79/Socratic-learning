@@ -29,7 +29,7 @@ class ReportGenerator:
 
         return {
             "report_type": "executive_summary",
-            "generated_at": datetime.utcnow().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "overview": global_summary,
             "top_agents": agent_list[:10],  # Top 10 agents
             "error_summary": error_summary,
@@ -56,7 +56,7 @@ class ReportGenerator:
         return {
             "report_type": "agent_report",
             "agent_name": agent_name,
-            "generated_at": datetime.utcnow().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "summary": agent_summary,
             "errors": error_summary,
             "costs": cost_summary,
@@ -99,7 +99,7 @@ class ReportGenerator:
         return {
             "report_type": "comparison_report",
             "agents": [agent1, agent2],
-            "generated_at": datetime.utcnow().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "agent1": {
                 "name": agent1,
                 "summary": summary1,
@@ -134,7 +134,7 @@ class ReportGenerator:
         # Create daily buckets
         timeline: dict[str, dict[str, Any]] = {}
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         for day_offset in range(days):
             day = now - __import__("datetime").timedelta(days=day_offset)
             day_str = day.strftime("%Y-%m-%d")
@@ -170,7 +170,7 @@ class ReportGenerator:
             "report_type": "timeline_report",
             "agent_name": agent_name,
             "period_days": days,
-            "generated_at": datetime.utcnow().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "timeline": timeline,
         }
 
@@ -200,7 +200,7 @@ class ReportGenerator:
 
         return {
             "report_type": "quality_report",
-            "generated_at": datetime.utcnow().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "agents": quality_grades,
             "summary": {
                 "total_agents": len(quality_grades),
@@ -236,7 +236,7 @@ class ReportGenerator:
 
         return {
             "dashboard_data": {
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "metrics": {
                     "total_interactions": global_summary["total_interactions"],
                     "success_rate": global_summary["success_rate"],

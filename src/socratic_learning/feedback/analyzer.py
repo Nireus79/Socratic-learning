@@ -1,6 +1,6 @@
 """Feedback analysis system."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
 
 from socratic_learning.storage.base import BaseLearningStore
@@ -27,7 +27,7 @@ class FeedbackAnalyzer:
         Returns:
             Dict with trend analysis
         """
-        end_time = datetime.utcnow()
+        end_time = datetime.now(timezone.utc)
         start_time = end_time - timedelta(days=days)
 
         interactions = self.store.list_interactions(
@@ -213,7 +213,7 @@ class FeedbackAnalyzer:
         Returns:
             Comparison dict
         """
-        end_time = datetime.utcnow()
+        end_time = datetime.now(timezone.utc)
         start_time = end_time - timedelta(days=days)
 
         interactions1 = self.store.list_interactions(

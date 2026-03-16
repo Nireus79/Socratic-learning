@@ -1,5 +1,6 @@
 """Recommendation engine for learning insights."""
 
+from datetime import timezone
 from typing import Any, Optional
 
 from socratic_learning.analytics import MetricsCollector, PatternDetector
@@ -154,7 +155,7 @@ class RecommendationEngine:
                 r.applied = True
                 from datetime import datetime
 
-                r.applied_at = datetime.utcnow()
+                r.applied_at = datetime.now(timezone.utc)
                 return self.store.update_recommendation(r)
 
         return None

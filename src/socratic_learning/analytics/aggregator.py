@@ -164,7 +164,7 @@ class DataAggregator:
         Returns:
             Comparison dict with both periods and changes
         """
-        end_time = datetime.utcnow()
+        end_time = datetime.now(timezone.utc)
 
         # First period
         period1_start = end_time - timedelta(days=days1 + days2)
