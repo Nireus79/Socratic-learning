@@ -16,7 +16,7 @@ class LearningTool:
     analyze, and improve agent performance over time.
     """
 
-    def __init__(self, store: SQLiteLearningStore | None = None) -> None:
+    def __init__(self, store: Optional[SQLiteLearningStore] = None) -> None:
         """Initialize the Learning Tool."""
         self.store = store or SQLiteLearningStore()
         self.logger = InteractionLogger(self.store)

@@ -18,7 +18,7 @@ class SocraticLearningSkill:
     agent performance in Openclaw workflows.
     """
 
-    def __init__(self, store: SQLiteLearningStore | None = None) -> None:
+    def __init__(self, store: Optional[SQLiteLearningStore] = None) -> None:
         """Initialize the Socratic Learning skill."""
         self.store = store or SQLiteLearningStore()
         self.logger = InteractionLogger(self.store)
