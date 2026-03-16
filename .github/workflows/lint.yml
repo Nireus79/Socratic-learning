@@ -30,11 +30,11 @@ jobs:
 
       - name: Check formatting with Black
         run: |
-          black --check --line-length=100 src/ tests/
+          black --check src/ tests/
 
       - name: Lint with Ruff
         run: |
-          ruff check --line-length=100 src/ tests/
+          ruff check src/ tests/
 
       - name: Type check with MyPy
         run: |
