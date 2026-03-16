@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional, Union
 from socratic_learning.analytics.metrics_collector import MetricsCollector
 from socratic_learning.analytics.pattern_detector import PatternDetector
 from socratic_learning.recommendations.engine import RecommendationEngine
+from socratic_learning.storage.sqlite_store import SQLiteLearningStore
 from socratic_learning.tracking.logger import InteractionLogger
 
 
@@ -15,12 +16,13 @@ class LearningTool:
     analyze, and improve agent performance over time.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, store: SQLiteLearningStore | None = None) -> None:
         """Initialize the Learning Tool."""
-        self.logger = InteractionLogger()
-        self.metrics_collector = MetricsCollector()
-        self.pattern_detector = PatternDetector()
-        self.recommendation_engine = RecommendationEngine()
+        self.store = store or SQLiteLearningStore()
+        self.logger = InteractionLogger(self.store)
+        self.metrics_collector = MetricsCollector(self.store)
+        self.pattern_detector = PatternDetector(self.store)
+        self.recommendation_engine = RecommendationEngine(self.store)
         self._sessions: Dict[str, Any] = {}
         self._interactions: Dict[str, Any] = {}
 
@@ -148,7 +150,6 @@ class LearningTool:
             return {"status": "no_data"}
 
         metric = self.metrics_collector.calculate_metrics(
-            interactions,
             agent_name=agent_name,
             session_id=session_id,
         )
@@ -187,7 +188,9 @@ class LearningTool:
         if not interactions:
             return {"status": "no_data"}
 
-        patterns = self.pattern_detector.detect_patterns(interactions)
+        patterns = self.pattern_detector.detect_all_patterns(
+            agent_name=agent_name
+        )
 
         filtered_patterns = [
             p for p in patterns if p.confidence >= min_confidence
@@ -230,7 +233,9 @@ class LearningTool:
             return {"status": "no_data"}
 
         recommendations = (
-            self.recommendation_engine.generate_recommendations(interactions)
+            self.recommendation_engine.generate_recommendations(
+                agent_name=agent_name
+            )
         )
 
         filtered_recs = [

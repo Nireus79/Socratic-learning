@@ -6,6 +6,7 @@ from socratic_learning.analytics.metrics_collector import MetricsCollector
 from socratic_learning.analytics.pattern_detector import PatternDetector
 from socratic_learning.core.interaction import Interaction
 from socratic_learning.recommendations.engine import RecommendationEngine
+from socratic_learning.storage.sqlite_store import SQLiteLearningStore
 from socratic_learning.tracking.logger import InteractionLogger
 from socratic_learning.tracking.session import Session
 
@@ -17,12 +18,13 @@ class SocraticLearningSkill:
     agent performance in Openclaw workflows.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, store: SQLiteLearningStore | None = None) -> None:
         """Initialize the Socratic Learning skill."""
-        self.logger = InteractionLogger()
-        self.metrics_collector = MetricsCollector()
-        self.pattern_detector = PatternDetector()
-        self.recommendation_engine = RecommendationEngine()
+        self.store = store or SQLiteLearningStore()
+        self.logger = InteractionLogger(self.store)
+        self.metrics_collector = MetricsCollector(self.store)
+        self.pattern_detector = PatternDetector(self.store)
+        self.recommendation_engine = RecommendationEngine(self.store)
         self._sessions: Dict[str, Session] = {}
         self._interactions: Dict[str, Interaction] = {}
 
@@ -140,7 +142,6 @@ class SocraticLearningSkill:
             return None
 
         metric = self.metrics_collector.calculate_metrics(
-            interactions,
             agent_name=agent_name,
             session_id=session_id,
         )
@@ -173,7 +174,9 @@ class SocraticLearningSkill:
         if not interactions:
             return []
 
-        patterns = self.pattern_detector.detect_patterns(interactions)
+        patterns = self.pattern_detector.detect_all_patterns(
+            agent_name=agent_name
+        )
 
         return [
             p.to_dict()
@@ -205,7 +208,7 @@ class SocraticLearningSkill:
             return []
 
         recommendations = self.recommendation_engine.generate_recommendations(
-            interactions
+            agent_name=agent_name
         )
 
         results = []
