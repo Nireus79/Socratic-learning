@@ -3,7 +3,7 @@ Name: socratic-learning
 Version: 0.1.0
 Summary: Continuous learning system that tracks agent interactions, detects patterns, and provides improvement recommendations.
 Author: Socratic Learning Contributors
-License: MIT
+License-Expression: MIT
 Project-URL: Homepage, https://github.com/Nireus79/Socratic-learning
 Project-URL: Repository, https://github.com/Nireus79/Socratic-learning
 Project-URL: Documentation, https://github.com/Nireus79/Socratic-learning#readme
@@ -12,7 +12,6 @@ Keywords: learning,tracking,agent,pattern-detection,recommendations,fine-tuning,
 Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
 Classifier: Intended Audience :: Information Technology
-Classifier: License :: OSI Approved :: MIT License
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
