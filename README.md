@@ -165,6 +165,16 @@ MIT
 
 Contributions welcome! Please open an issue or submit a PR.
 
+## Support Development
+
+If you find this package useful, consider supporting development:
+
+- [Become a Sponsor](https://github.com/sponsors/Nireus79) - Get early access to new features
+- [Star on GitHub](https://github.com/Nireus79/Socratic-learning) - Shows your appreciation
+- [Report Issues](https://github.com/Nireus79/Socratic-learning/issues) - Help improve the package
+
+Your support helps fund development of the entire Socratic ecosystem.
+
 ## Status
 
 **Phase 1** - Core foundation complete (v0.1.0 development)
