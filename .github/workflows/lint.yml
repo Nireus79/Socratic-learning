@@ -12,6 +12,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Important: Use LF line endings on Linux
+          autocrlf: false
+          safecrlf: false
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -26,11 +30,11 @@ jobs:
 
       - name: Check formatting with Black
         run: |
-          black --check src/ tests/
+          black --check --line-length=100 src/ tests/
 
       - name: Lint with Ruff
         run: |
-          ruff check src/ tests/
+          ruff check --line-length=100 src/ tests/
 
       - name: Type check with MyPy
         run: |
