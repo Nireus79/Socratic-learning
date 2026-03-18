@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pytest
 
-from socratic_learning.analytics import AnalyticsCalculator, LearningEngine
 from socratic_learning.storage import SQLiteLearningStore
 from socratic_learning.tracking import InteractionLogger
 

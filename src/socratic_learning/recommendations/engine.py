@@ -4,7 +4,6 @@ from datetime import timezone
 from typing import Any, Optional
 
 from socratic_learning.core import Recommendation
-from socratic_learning.recommendations.rules import RecommendationRules
 from socratic_learning.storage.base import BaseLearningStore
 
 
