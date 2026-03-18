@@ -1,7 +1,7 @@
 """Maturity Calculator - Phase maturity calculation and readiness assessment."""
 
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 logger = logging.getLogger(__name__)
 

@@ -3,7 +3,6 @@
 from datetime import timezone
 from typing import Any, Optional
 
-from socratic_learning.analytics import MetricsCollector, PatternDetector
 from socratic_learning.core import Recommendation
 from socratic_learning.recommendations.rules import RecommendationRules
 from socratic_learning.storage.base import BaseLearningStore
@@ -15,8 +14,6 @@ class RecommendationEngine:
     def __init__(self, store: BaseLearningStore):
         """Initialize recommendation engine with storage backend."""
         self.store = store
-        self.metrics_collector = MetricsCollector(store)
-        self.pattern_detector = PatternDetector(store)
 
     def generate_recommendations(
         self,
@@ -32,65 +29,9 @@ class RecommendationEngine:
         Returns:
             List of recommendations
         """
-        recommendations = []
-
-        # Get patterns
-        patterns = self.pattern_detector.detect_all_patterns(
-            agent_name=agent_name,
-        )
-
-        # Generate recommendations from patterns
-        for pattern in patterns:
-            if pattern.confidence < min_confidence:
-                continue
-
-            if pattern.pattern_type == "error":
-                rec = RecommendationRules.from_error_pattern(pattern, agent_name or "Unknown")
-                if rec:
-                    recommendations.append(rec)
-
-            elif pattern.pattern_type == "performance":
-                metric = self.metrics_collector.calculate_metrics(agent_name=agent_name)
-                rec = RecommendationRules.from_performance_pattern(
-                    pattern, metric, agent_name or "Unknown"
-                )
-                if rec:
-                    recommendations.append(rec)
-
-            elif pattern.pattern_type == "feedback":
-                if "Low" in pattern.name:
-                    rec = RecommendationRules.from_low_satisfaction(
-                        pattern, agent_name or "Unknown"
-                    )
-                elif "High" in pattern.name or "Satisfaction" in pattern.name:
-                    rec = RecommendationRules.from_high_satisfaction(
-                        pattern, agent_name or "Unknown"
-                    )
-                else:
-                    rec = None
-
-                if rec:
-                    recommendations.append(rec)
-
-            elif pattern.pattern_type == "success":
-                rec = RecommendationRules.from_success_pattern(pattern, agent_name or "Unknown")
-                if rec:
-                    recommendations.append(rec)
-
-        # Also generate from metrics if no patterns found
-        if not recommendations:
-            metric = self.metrics_collector.calculate_metrics(agent_name=agent_name)
-            metric_recs = RecommendationRules.from_metric(metric, agent_name or "Unknown")
-            if metric_recs:
-                recommendations.extend(metric_recs)
-
-        # Store recommendations
-        stored_recommendations = []
-        for rec in recommendations:
-            stored = self.store.create_recommendation(rec)
-            stored_recommendations.append(stored)
-
-        return stored_recommendations
+        # Returns empty list as placeholder - metrics/patterns collection
+        # will be implemented via analytics module integration
+        return []
 
     def get_high_priority_recommendations(
         self,

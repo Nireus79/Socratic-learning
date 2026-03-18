@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class UserProfile:
     """User behavior profile data class"""
-    def __init__(self, user_id, total_questions_asked, total_answered_well, 
+    def __init__(self, user_id, total_questions_asked, total_answered_well,
                  overall_response_quality, topics_explored, projects_completed, topic_interactions):
         self.user_id = user_id
         self.total_questions_asked = total_questions_asked

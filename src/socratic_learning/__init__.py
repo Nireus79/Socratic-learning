@@ -1,6 +1,6 @@
 """Socratic Learning - Continuous learning system for AI agents."""
 
-from socratic_learning.analytics import MetricsCollector, PatternDetector
+from socratic_learning.analytics import AnalyticsCalculator, LearningEngine, MaturityCalculator
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
 from socratic_learning.exceptions import (
     AggregationError,
@@ -47,8 +47,9 @@ __all__ = [
     "SQLiteLearningStore",
     "Session",
     "InteractionLogger",
-    "MetricsCollector",
-    "PatternDetector",
+    "LearningEngine",
+    "AnalyticsCalculator",
+    "MaturityCalculator",
     "SocraticLearningSkill",
     "LearningTool",
     # Exceptions
