@@ -1,84 +1,14 @@
-"""Socratic Learning - Continuous learning system for AI agents."""
+"""
+Learning Module - Learning engine and skill generation.
 
-from socratic_learning.analytics import AnalyticsCalculator, LearningEngine, MaturityCalculator
-from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
-from socratic_learning.exceptions import (
-    AggregationError,
-    AnalyticsException,
-    DataValidationException,
-    ExportError,
-    InsufficientDataError,
-    InteractionException,
-    InteractionFeedbackError,
-    InteractionNotFoundError,
-    InvalidFeedbackError,
-    InvalidInteractionDataError,
-    InvalidMetricDataError,
-    InvalidPatternDataError,
-    InvalidRecommendationStateError,
-    InvalidSessionStateError,
-    MetricsCalculationError,
-    PatternDetectionError,
-    PatternException,
-    RecommendationException,
-    RecommendationGenerationError,
-    RecommendationNotFoundError,
-    ReportGenerationError,
-    SessionException,
-    SessionNotFoundError,
-    SocraticLearningException,
-    StorageBackendError,
-    StorageException,
-    StorageNotFoundError,
-    StorageOperationError,
-)
-from socratic_learning.integrations import LearningTool, SocraticLearningSkill
-from socratic_learning.storage import BaseLearningStore, SQLiteLearningStore
-from socratic_learning.tracking import InteractionLogger, Session
+Provides:
+- Learning engine for tracking interactions
+- Skill generation using SkillGeneratorAgent
+- Recommendations for agent improvement
+"""
 
-__version__ = "0.1.0"
+from modules.learning.service import LearningService
 
 __all__ = [
-    "Interaction",
-    "Pattern",
-    "Metric",
-    "Recommendation",
-    "BaseLearningStore",
-    "SQLiteLearningStore",
-    "Session",
-    "InteractionLogger",
-    "LearningEngine",
-    "AnalyticsCalculator",
-    "MaturityCalculator",
-    "SocraticLearningSkill",
-    "LearningTool",
-    # Exceptions
-    "SocraticLearningException",
-    "StorageException",
-    "StorageBackendError",
-    "StorageOperationError",
-    "StorageNotFoundError",
-    "DataValidationException",
-    "InvalidInteractionDataError",
-    "InvalidFeedbackError",
-    "InvalidMetricDataError",
-    "InvalidPatternDataError",
-    "InteractionException",
-    "InteractionNotFoundError",
-    "InteractionFeedbackError",
-    "SessionException",
-    "SessionNotFoundError",
-    "InvalidSessionStateError",
-    "PatternException",
-    "PatternDetectionError",
-    "InsufficientDataError",
-    "RecommendationException",
-    "RecommendationGenerationError",
-    "RecommendationNotFoundError",
-    "InvalidRecommendationStateError",
-    "AnalyticsException",
-    "MetricsCalculationError",
-    "ReportGenerationError",
-    "AggregationError",
-    "ExportError",
+    "LearningService",
 ]
