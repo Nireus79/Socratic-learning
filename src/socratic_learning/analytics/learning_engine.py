@@ -12,8 +12,16 @@ logger = logging.getLogger(__name__)
 
 class UserProfile:
     """User behavior profile data class"""
-    def __init__(self, user_id, total_questions_asked, total_answered_well,
-                 overall_response_quality, topics_explored, projects_completed, topic_interactions):
+    def __init__(
+        self,
+        user_id: str,
+        total_questions_asked: int,
+        total_answered_well: int,
+        overall_response_quality: float,
+        topics_explored: int,
+        projects_completed: int,
+        topic_interactions: List[str],
+    ) -> None:
         self.user_id = user_id
         self.total_questions_asked = total_questions_asked
         self.total_answered_well = total_answered_well
@@ -82,7 +90,7 @@ class LearningEngine:
             "projects_completed": profile.projects_completed,
         }
 
-    def get_personalization_hints(self, profile: UserProfile, metrics: Dict) -> List[str]:
+    def get_personalization_hints(self, profile: UserProfile, metrics: Dict[str, Any]) -> List[str]:
         """Generate personalization hints based on profile"""
         hints = []
 

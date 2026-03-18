@@ -1,7 +1,7 @@
 """Analytics Calculator - Maturity tracking insights and recommendations."""
 
 import logging
-from typing import Dict, List
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -14,11 +14,11 @@ class AnalyticsCalculator:
         self.project_type = project_type
         logger.debug(f"AnalyticsCalculator initialized for {project_type}")
 
-    def analyze_category_performance(self, project: Dict) -> Dict:
+    def analyze_category_performance(self, project: Dict[str, Any]) -> Dict[str, Any]:
         """Analyze category strengths and weaknesses"""
-        weak_categories = []
-        strong_categories = []
-        missing_categories = []
+        weak_categories: List[Dict[str, Any]] = []
+        strong_categories: List[Dict[str, Any]] = []
+        missing_categories: List[str] = []
 
         category_scores = project.get("category_scores", {})
 
@@ -66,14 +66,14 @@ class AnalyticsCalculator:
         velocity = (recent[-1] - recent[0]) / (len(recent) - 1)
         return max(0.0, velocity)
 
-    def identify_plateaus(self, maturity_history: List[float]) -> List[int]:
+    def identify_plateaus(self, maturity_history: List[float]) -> list[tuple[int, int]]:
         """Identify periods of stagnation in learning"""
-        plateaus = []
+        plateaus: list[tuple[int, int]] = []
         if len(maturity_history) < 5:
             return plateaus
 
         threshold = 2.0  # Less than 2% change
-        plateau_start = None
+        plateau_start: Optional[int] = None
 
         for i in range(1, len(maturity_history)):
             change = abs(maturity_history[i] - maturity_history[i-1])
@@ -87,7 +87,7 @@ class AnalyticsCalculator:
 
         return plateaus
 
-    def generate_recommendations(self, project: Dict) -> List[str]:
+    def generate_recommendations(self, project: Dict[str, Any]) -> List[str]:
         """Generate actionable recommendations"""
         recommendations = []
         analysis = self.analyze_category_performance(project)

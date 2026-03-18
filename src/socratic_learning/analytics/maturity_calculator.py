@@ -1,7 +1,7 @@
 """Maturity Calculator - Phase maturity calculation and readiness assessment."""
 
 import logging
-from typing import Dict, List
+from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -18,7 +18,9 @@ class MaturityCalculator:
         self.project_type = project_type
         logger.debug(f"MaturityCalculator initialized for {project_type}")
 
-    def calculate_phase_maturity(self, phase_specs: List[Dict], phase: str) -> Dict:
+    def calculate_phase_maturity(
+        self, phase_specs: List[Dict[str, Any]], phase: str
+    ) -> Dict[str, Any]:
         """Calculate maturity for a phase using confidence-weighted algorithm"""
         if not phase_specs:
             return {
@@ -33,7 +35,7 @@ class MaturityCalculator:
             }
 
         # Aggregate spec values by category
-        category_totals = {}
+        category_totals: dict[str, int] = {}
         for spec in phase_specs:
             categories = spec.get("categories", [])
             value = spec.get("value", 0)
@@ -66,9 +68,11 @@ class MaturityCalculator:
             "warnings": warnings,
         }
 
-    def categorize_insights(self, insights: List[Dict], categories: List[str]) -> Dict[str, List]:
+    def categorize_insights(
+        self, insights: List[Dict[str, Any]], categories: List[str]
+    ) -> Dict[str, List[Dict[str, Any]]]:
         """Categorize insights into phase categories"""
-        categorized = {cat: [] for cat in categories}
+        categorized: Dict[str, List[Dict[str, Any]]] = {cat: [] for cat in categories}
 
         for insight in insights:
             insight_cats = insight.get("categories", [])
@@ -78,9 +82,9 @@ class MaturityCalculator:
 
         return categorized
 
-    def generate_warnings(self, maturity_data: Dict) -> List[str]:
+    def generate_warnings(self, maturity_data: Dict[str, Any]) -> List[str]:
         """Generate warnings based on maturity state"""
-        warnings = []
+        warnings: List[str] = []
 
         if maturity_data.get("maturity_percentage", 0) < WARNING_THRESHOLD:
             warnings.append("CRITICAL: Phase severely underdeveloped")
