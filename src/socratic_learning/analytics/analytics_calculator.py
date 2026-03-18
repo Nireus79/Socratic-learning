@@ -34,23 +34,29 @@ class AnalyticsCalculator:
             if spec_count == 0:
                 missing_categories.append(category)
             elif percentage < 30:
-                weak_categories.append({
-                    "category": category,
-                    "percentage": percentage,
-                    "current": current,
-                    "target": target,
-                })
+                weak_categories.append(
+                    {
+                        "category": category,
+                        "percentage": percentage,
+                        "current": current,
+                        "target": target,
+                    }
+                )
             elif percentage > 70:
-                strong_categories.append({
-                    "category": category,
-                    "percentage": percentage,
-                    "current": current,
-                    "target": target,
-                })
+                strong_categories.append(
+                    {
+                        "category": category,
+                        "percentage": percentage,
+                        "current": current,
+                        "target": target,
+                    }
+                )
 
         return {
             "weak_categories": sorted(weak_categories, key=lambda x: x["percentage"]),
-            "strong_categories": sorted(strong_categories, key=lambda x: x["percentage"], reverse=True),
+            "strong_categories": sorted(
+                strong_categories, key=lambda x: x["percentage"], reverse=True
+            ),
             "missing_categories": missing_categories,
         }
 
@@ -76,7 +82,7 @@ class AnalyticsCalculator:
         plateau_start: Optional[int] = None
 
         for i in range(1, len(maturity_history)):
-            change = abs(maturity_history[i] - maturity_history[i-1])
+            change = abs(maturity_history[i] - maturity_history[i - 1])
             if change < threshold:
                 if plateau_start is None:
                     plateau_start = i - 1

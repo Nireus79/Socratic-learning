@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 class UserProfile:
     """User behavior profile data class"""
+
     def __init__(
         self,
         user_id: str,
@@ -50,7 +51,9 @@ class LearningEngine:
         """Build user profile from raw metrics"""
         total_questions = sum(q.get("times_asked", 0) for q in questions_asked)
         total_answered_well = sum(q.get("times_answered_well", 0) for q in questions_asked)
-        overall_quality = sum(responses_quality) / len(responses_quality) if responses_quality else 0.5
+        overall_quality = (
+            sum(responses_quality) / len(responses_quality) if responses_quality else 0.5
+        )
         topics_explored = len(set(topic_interactions))
 
         return UserProfile(

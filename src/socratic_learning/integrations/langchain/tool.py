@@ -180,21 +180,15 @@ class LearningTool:
             Patterns as dict
         """
         interactions = [
-            i
-            for i in self._interactions.values()
-            if not agent_name or i.agent_name == agent_name
+            i for i in self._interactions.values() if not agent_name or i.agent_name == agent_name
         ]
 
         if not interactions:
             return {"status": "no_data"}
 
-        patterns = self.pattern_detector.detect_all_patterns(
-            agent_name=agent_name
-        )
+        patterns = self.pattern_detector.detect_all_patterns(agent_name=agent_name)
 
-        filtered_patterns = [
-            p for p in patterns if p.confidence >= min_confidence
-        ]
+        filtered_patterns = [p for p in patterns if p.confidence >= min_confidence]
 
         return {
             "status": "detected",
@@ -224,25 +218,15 @@ class LearningTool:
             Recommendations as dict
         """
         interactions = [
-            i
-            for i in self._interactions.values()
-            if not agent_name or i.agent_name == agent_name
+            i for i in self._interactions.values() if not agent_name or i.agent_name == agent_name
         ]
 
         if not interactions:
             return {"status": "no_data"}
 
-        recommendations = (
-            self.recommendation_engine.generate_recommendations(
-                agent_name=agent_name
-            )
-        )
+        recommendations = self.recommendation_engine.generate_recommendations(agent_name=agent_name)
 
-        filtered_recs = [
-            r
-            for r in recommendations
-            if not priority or r.priority == priority
-        ]
+        filtered_recs = [r for r in recommendations if not priority or r.priority == priority]
 
         return {
             "status": "generated",
@@ -264,30 +248,18 @@ class LearningTool:
             Statistics as dict
         """
         total_interactions = len(self._interactions)
-        success_count = sum(
-            1 for i in self._interactions.values() if i.success
-        )
+        success_count = sum(1 for i in self._interactions.values() if i.success)
 
-        ratings = [
-            i.user_rating
-            for i in self._interactions.values()
-            if i.user_rating is not None
-        ]
+        ratings = [i.user_rating for i in self._interactions.values() if i.user_rating is not None]
 
         return {
             "status": "calculated",
             "total_interactions": total_interactions,
             "success_rate": (
-                f"{success_count / total_interactions:.1%}"
-                if total_interactions > 0
-                else "0%"
+                f"{success_count / total_interactions:.1%}" if total_interactions > 0 else "0%"
             ),
-            "average_rating": (
-                f"{sum(ratings) / len(ratings):.1f}/5.0" if ratings else None
-            ),
-            "unique_agents": len(
-                set(i.agent_name for i in self._interactions.values())
-            ),
+            "average_rating": (f"{sum(ratings) / len(ratings):.1f}/5.0" if ratings else None),
+            "unique_agents": len(set(i.agent_name for i in self._interactions.values())),
         }
 
     def invoke(
@@ -303,9 +275,7 @@ class LearningTool:
             Tool output as dict
         """
         if isinstance(tool_input, str):
-            return {
-                "error": "Invalid input format. Expected dict with action and params."
-            }
+            return {"error": "Invalid input format. Expected dict with action and params."}
 
         action = tool_input.get("action")
         params = tool_input.get("params", {})

@@ -166,23 +166,15 @@ class SocraticLearningSkill:
             List of detected patterns
         """
         interactions = [
-            i
-            for i in self._interactions.values()
-            if not agent_name or i.agent_name == agent_name
+            i for i in self._interactions.values() if not agent_name or i.agent_name == agent_name
         ]
 
         if not interactions:
             return []
 
-        patterns = self.pattern_detector.detect_all_patterns(
-            agent_name=agent_name
-        )
+        patterns = self.pattern_detector.detect_all_patterns(agent_name=agent_name)
 
-        return [
-            p.to_dict()
-            for p in patterns
-            if p.confidence >= min_confidence
-        ]
+        return [p.to_dict() for p in patterns if p.confidence >= min_confidence]
 
     def get_recommendations(
         self,
@@ -199,17 +191,13 @@ class SocraticLearningSkill:
             List of recommendations
         """
         interactions = [
-            i
-            for i in self._interactions.values()
-            if not agent_name or i.agent_name == agent_name
+            i for i in self._interactions.values() if not agent_name or i.agent_name == agent_name
         ]
 
         if not interactions:
             return []
 
-        recommendations = self.recommendation_engine.generate_recommendations(
-            agent_name=agent_name
-        )
+        recommendations = self.recommendation_engine.generate_recommendations(agent_name=agent_name)
 
         results = []
         for rec in recommendations:
@@ -232,10 +220,7 @@ class SocraticLearningSkill:
         if not session:
             return None
 
-        interactions = [
-            i for i in self._interactions.values()
-            if i.session_id == session_id
-        ]
+        interactions = [i for i in self._interactions.values() if i.session_id == session_id]
 
         agents = list(set(i.agent_name for i in interactions))
         metrics_by_agent = {}
@@ -267,28 +252,16 @@ class SocraticLearningSkill:
         total_interactions = len(self._interactions)
 
         agents = list(set(i.agent_name for i in self._interactions.values()))
-        success_count = sum(
-            1 for i in self._interactions.values() if i.success
-        )
+        success_count = sum(1 for i in self._interactions.values() if i.success)
 
-        ratings = [
-            i.user_rating
-            for i in self._interactions.values()
-            if i.user_rating is not None
-        ]
+        ratings = [i.user_rating for i in self._interactions.values() if i.user_rating is not None]
 
         return {
             "total_sessions": total_sessions,
             "total_interactions": total_interactions,
             "unique_agents": len(agents),
-            "success_rate": (
-                success_count / total_interactions
-                if total_interactions > 0
-                else 0.0
-            ),
-            "average_rating": (
-                sum(ratings) / len(ratings) if ratings else None
-            ),
+            "success_rate": (success_count / total_interactions if total_interactions > 0 else 0.0),
+            "average_rating": (sum(ratings) / len(ratings) if ratings else None),
             "patterns_count": len(self.detect_patterns()),
             "recommendations_count": len(self.get_recommendations()),
         }

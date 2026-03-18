@@ -13,6 +13,7 @@ class SocraticLearningException(Exception):
 
 # Storage exceptions
 
+
 class StorageException(SocraticLearningException):
     """Base exception for storage operation failures."""
 
@@ -38,6 +39,7 @@ class StorageNotFoundError(StorageException):
 
 
 # Data validation exceptions
+
 
 class DataValidationException(SocraticLearningException):
     """Base exception for data validation failures."""
@@ -77,6 +79,7 @@ class InvalidPatternDataError(DataValidationException):
 
 # Interaction exceptions
 
+
 class InteractionException(SocraticLearningException):
     """Base exception for interaction-related errors."""
 
@@ -96,6 +99,7 @@ class InteractionFeedbackError(InteractionException):
 
 
 # Session exceptions
+
 
 class SessionException(SocraticLearningException):
     """Base exception for session-related errors."""
@@ -117,6 +121,7 @@ class InvalidSessionStateError(SessionException):
 
 # Pattern detection exceptions
 
+
 class PatternException(SocraticLearningException):
     """Base exception for pattern detection failures."""
 
@@ -136,6 +141,7 @@ class InsufficientDataError(PatternException):
 
 
 # Recommendation exceptions
+
 
 class RecommendationException(SocraticLearningException):
     """Base exception for recommendation generation failures."""
@@ -162,6 +168,7 @@ class InvalidRecommendationStateError(RecommendationException):
 
 
 # Analytics exceptions
+
 
 class AnalyticsException(SocraticLearningException):
     """Base exception for analytics operation failures."""
