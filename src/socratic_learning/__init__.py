@@ -2,7 +2,7 @@
 
 from socratic_learning.analytics import AnalyticsCalculator, LearningEngine, MaturityCalculator
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
-from socratic_learning.exceptions import (
+from socratic_learning.exceptions import (  # noqa: F401
     AggregationError,
     AnalyticsException,
     DataValidationException,
@@ -33,6 +33,11 @@ from socratic_learning.exceptions import (
     StorageOperationError,
 )
 from socratic_learning.integrations import LearningTool, SocraticLearningSkill
+from socratic_learning.models import (
+    KnowledgeBaseDocument,
+    QuestionEffectiveness,
+    UserBehaviorPattern,
+)
 from socratic_learning.storage import BaseLearningStore, SQLiteLearningStore
 from socratic_learning.tracking import InteractionLogger, Session
 
@@ -40,54 +45,51 @@ __version__ = "0.1.0"
 
 __all__ = [
     "Interaction",
-    "Pattern",
-    "Metric",
-    "Recommendation",
-    "BaseLearningStore",
-    "SQLiteLearningStore",
-    "Session",
-    "InteractionLogger",
+    "KnowledgeBaseDocument",
     "LearningEngine",
+    "LearningTool",
+    "Metric",
+    "Pattern",
+    "QuestionEffectiveness",
+    "Recommendation",
+    "SocraticLearningSkill",
+    "UserBehaviorPattern",
+    # Analytics
     "AnalyticsCalculator",
     "MaturityCalculator",
-    "SocraticLearningSkill",
-    "LearningTool",
+    # Storage
+    "BaseLearningStore",
+    "SQLiteLearningStore",
+    # Tracking
+    "InteractionLogger",
+    "Session",
     # Exceptions
-    "SocraticLearningException",
-    "StorageException",
-    "StorageBackendError",
-    "StorageOperationError",
-    "StorageNotFoundError",
+    "AggregationError",
+    "AnalyticsException",
     "DataValidationException",
-    "InvalidInteractionDataError",
+    "ExportError",
+    "InsufficientDataError",
+    "InteractionException",
+    "InteractionFeedbackError",
+    "InteractionNotFoundError",
     "InvalidFeedbackError",
+    "InvalidInteractionDataError",
     "InvalidMetricDataError",
     "InvalidPatternDataError",
-    "InteractionException",
-    "InteractionNotFoundError",
-    "InteractionFeedbackError",
-    "SessionException",
-    "SessionNotFoundError",
+    "InvalidRecommendationStateError",
     "InvalidSessionStateError",
-    "PatternException",
+    "MetricsCalculationError",
     "PatternDetectionError",
-    "InsufficientDataError",
+    "PatternException",
     "RecommendationException",
     "RecommendationGenerationError",
     "RecommendationNotFoundError",
-    "InvalidRecommendationStateError",
-    "AnalyticsException",
-    "MetricsCalculationError",
     "ReportGenerationError",
-    "AggregationError",
-    "ExportError",
-]
-
-# Re-export learning models
-from .models import QuestionEffectiveness, UserBehaviorPattern, KnowledgeBaseDocument
-
-__all__ = [
-    "QuestionEffectiveness",
-    "UserBehaviorPattern", 
-    "KnowledgeBaseDocument",
+    "SessionException",
+    "SessionNotFoundError",
+    "SocraticLearningException",
+    "StorageBackendError",
+    "StorageException",
+    "StorageNotFoundError",
+    "StorageOperationError",
 ]
