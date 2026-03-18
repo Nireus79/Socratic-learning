@@ -129,7 +129,8 @@ An actionable improvement suggestion based on detected patterns and metrics.
 
 ## Documentation
 
-See [examples/](examples/) for complete working examples.
+- **[Maturity Calculation System](docs/MATURITY_CALCULATION_SYSTEM.md)** - Complete guide to the confidence-weighted maturity scoring system, including core algorithms, category definitions, and API reference
+- See [examples/](examples/) for complete working examples
 
 ## Testing
 
