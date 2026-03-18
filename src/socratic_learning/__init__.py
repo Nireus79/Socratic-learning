@@ -82,3 +82,12 @@ __all__ = [
     "AggregationError",
     "ExportError",
 ]
+
+# Re-export learning models
+from .models import QuestionEffectiveness, UserBehaviorPattern, KnowledgeBaseDocument
+
+__all__ = [
+    "QuestionEffectiveness",
+    "UserBehaviorPattern", 
+    "KnowledgeBaseDocument",
+]
