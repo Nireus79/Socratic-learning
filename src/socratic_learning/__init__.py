@@ -41,7 +41,7 @@ from socratic_learning.models import (
 from socratic_learning.storage import BaseLearningStore, SQLiteLearningStore
 from socratic_learning.tracking import InteractionLogger, Session
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "Interaction",
