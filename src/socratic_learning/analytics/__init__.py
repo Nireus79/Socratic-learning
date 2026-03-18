@@ -1,13 +1,7 @@
-"""Analytics and metrics for Socratic Learning."""
+"""Analytics module - Learning metrics and maturity calculations"""
 
-from socratic_learning.analytics.aggregator import DataAggregator
-from socratic_learning.analytics.metrics_collector import MetricsCollector
-from socratic_learning.analytics.pattern_detector import PatternDetector
-from socratic_learning.analytics.reporter import ReportGenerator
+from socratic_learning.analytics.analytics_calculator import AnalyticsCalculator
+from socratic_learning.analytics.learning_engine import LearningEngine
+from socratic_learning.analytics.maturity_calculator import MaturityCalculator
 
-__all__ = [
-    "MetricsCollector",
-    "PatternDetector",
-    "DataAggregator",
-    "ReportGenerator",
-]
+__all__ = ["LearningEngine", "AnalyticsCalculator", "MaturityCalculator"]
