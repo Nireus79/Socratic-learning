@@ -60,9 +60,7 @@ def ensure_iso_datetime(data: Dict[str, Any], *date_fields: str) -> Dict[str, An
     return result
 
 
-def ensure_decimals(
-    data: Dict[str, Any], decimal_fields: Dict[str, str]
-) -> Dict[str, Any]:
+def ensure_decimals(data: Dict[str, Any], decimal_fields: Dict[str, str]) -> Dict[str, Any]:
     """
     Convert float/string values in dict to Decimal objects.
 
