@@ -5,6 +5,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
+from ..utils import ensure_decimals, ensure_iso_datetime
+
 
 @dataclass
 class Recommendation:
@@ -63,8 +65,6 @@ class Recommendation:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Recommendation":
         """Deserialize from storage."""
-        data = data.copy()
-        data["created_at"] = datetime.fromisoformat(data["created_at"])
-        if data.get("applied_at"):
-            data["applied_at"] = datetime.fromisoformat(data["applied_at"])
+        data = ensure_decimals(data, {"effectiveness_score": "0.0"})
+        data = ensure_iso_datetime(data, "created_at", "applied_at")
         return cls(**data)

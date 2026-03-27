@@ -5,6 +5,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
+from ..utils import ensure_iso_datetime
+
 
 @dataclass
 class Interaction:
@@ -71,8 +73,5 @@ class Interaction:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Interaction":
         """Deserialize from storage."""
-        data = data.copy()
-        data["timestamp"] = datetime.fromisoformat(data["timestamp"])
-        if data.get("feedback_timestamp"):
-            data["feedback_timestamp"] = datetime.fromisoformat(data["feedback_timestamp"])
+        data = ensure_iso_datetime(data, "timestamp", "feedback_timestamp")
         return cls(**data)

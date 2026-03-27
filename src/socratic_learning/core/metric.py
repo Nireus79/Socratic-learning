@@ -5,6 +5,8 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 from uuid import uuid4
 
+from ..utils import ensure_iso_datetime
+
 
 @dataclass
 class Metric:
@@ -69,7 +71,5 @@ class Metric:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Metric":
         """Deserialize from storage."""
-        data = data.copy()
-        data["time_period_start"] = datetime.fromisoformat(data["time_period_start"])
-        data["time_period_end"] = datetime.fromisoformat(data["time_period_end"])
+        data = ensure_iso_datetime(data, "time_period_start", "time_period_end")
         return cls(**data)

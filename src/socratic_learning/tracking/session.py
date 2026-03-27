@@ -5,6 +5,8 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 from uuid import uuid4
 
+from ..utils import ensure_iso_datetime
+
 
 @dataclass
 class Session:
@@ -37,10 +39,7 @@ class Session:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Session":
         """Deserialize from storage."""
-        data = data.copy()
-        data["created_at"] = datetime.fromisoformat(data["created_at"])
-        if data.get("ended_at"):
-            data["ended_at"] = datetime.fromisoformat(data["ended_at"])
+        data = ensure_iso_datetime(data, "created_at", "ended_at")
         return cls(**data)
 
     def end(self) -> None:

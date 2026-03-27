@@ -5,6 +5,9 @@ from typing import Any, Dict, List, Optional
 from socratic_learning.analytics.metrics_collector import MetricsCollector
 from socratic_learning.analytics.pattern_detector import PatternDetector
 from socratic_learning.core.interaction import Interaction
+from socratic_learning.core.metric import Metric
+from socratic_learning.core.pattern import Pattern
+from socratic_learning.core.recommendation import Recommendation
 from socratic_learning.recommendations.engine import RecommendationEngine
 from socratic_learning.storage.sqlite_store import SQLiteLearningStore
 from socratic_learning.tracking.logger import InteractionLogger
@@ -121,7 +124,7 @@ class SocraticLearningSkill:
         self,
         agent_name: Optional[str] = None,
         session_id: Optional[str] = None,
-    ) -> Optional[Dict[str, Any]]:
+    ) -> Optional[Metric]:
         """Get performance metrics for agents.
 
         Args:
@@ -129,7 +132,7 @@ class SocraticLearningSkill:
             session_id: Filter by session ID
 
         Returns:
-            Metrics dictionary or None if no data
+            Metric object or None if no data
         """
         interactions = [
             i
@@ -149,13 +152,13 @@ class SocraticLearningSkill:
         if not metric:
             return None
 
-        return metric.to_dict()
+        return metric
 
     def detect_patterns(
         self,
         agent_name: Optional[str] = None,
         min_confidence: float = 0.7,
-    ) -> List[Dict[str, Any]]:
+    ) -> List[Pattern]:
         """Detect patterns in agent behavior.
 
         Args:
@@ -163,7 +166,7 @@ class SocraticLearningSkill:
             min_confidence: Minimum confidence threshold
 
         Returns:
-            List of detected patterns
+            List of Pattern objects
         """
         interactions = [
             i for i in self._interactions.values() if not agent_name or i.agent_name == agent_name
@@ -174,13 +177,13 @@ class SocraticLearningSkill:
 
         patterns = self.pattern_detector.detect_all_patterns(agent_name=agent_name)
 
-        return [p.to_dict() for p in patterns if p.confidence >= min_confidence]
+        return [p for p in patterns if p.confidence >= min_confidence]
 
     def get_recommendations(
         self,
         agent_name: Optional[str] = None,
         priority: Optional[str] = None,
-    ) -> List[Dict[str, Any]]:
+    ) -> List[Recommendation]:
         """Get learning recommendations.
 
         Args:
@@ -188,7 +191,7 @@ class SocraticLearningSkill:
             priority: Filter by priority (high, medium, low)
 
         Returns:
-            List of recommendations
+            List of Recommendation objects
         """
         interactions = [
             i for i in self._interactions.values() if not agent_name or i.agent_name == agent_name
@@ -203,7 +206,7 @@ class SocraticLearningSkill:
         for rec in recommendations:
             if priority and rec.priority != priority:
                 continue
-            results.append(rec.to_dict())
+            results.append(rec)
 
         return results
 

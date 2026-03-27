@@ -7,6 +7,8 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any, Dict, List, Optional
 
+from .utils import ensure_decimals, ensure_iso_datetime, parse_decimal
+
 
 @dataclass
 class QuestionEffectiveness:
@@ -45,20 +47,11 @@ class QuestionEffectiveness:
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> "QuestionEffectiveness":
         """Create from dictionary (reverse of to_dict)."""
-        # Convert float back to Decimal
-        data["average_spec_extraction_count"] = Decimal(
-            str(data.get("average_spec_extraction_count", 0))
+        # Convert float to Decimal and ISO strings to datetime
+        data = ensure_decimals(
+            data, {"average_spec_extraction_count": "0", "effectiveness_score": "0.5"}
         )
-        data["effectiveness_score"] = Decimal(str(data.get("effectiveness_score", 0.5)))
-
-        # Convert ISO strings back to datetime
-        if data.get("last_asked_at"):
-            data["last_asked_at"] = datetime.fromisoformat(data["last_asked_at"])
-        if data.get("created_at"):
-            data["created_at"] = datetime.fromisoformat(data["created_at"])
-        if data.get("updated_at"):
-            data["updated_at"] = datetime.fromisoformat(data["updated_at"])
-
+        data = ensure_iso_datetime(data, "last_asked_at", "created_at", "updated_at")
         return QuestionEffectiveness(**data)
 
 
@@ -96,15 +89,9 @@ class UserBehaviorPattern:
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> "UserBehaviorPattern":
         """Create from dictionary (reverse of to_dict)."""
-        # Convert float back to Decimal
-        data["confidence"] = Decimal(str(data.get("confidence", 0.5)))
-
-        # Convert ISO strings back to datetime
-        if data.get("learned_at"):
-            data["learned_at"] = datetime.fromisoformat(data["learned_at"])
-        if data.get("updated_at"):
-            data["updated_at"] = datetime.fromisoformat(data["updated_at"])
-
+        # Convert float to Decimal and ISO strings to datetime
+        data = ensure_decimals(data, {"confidence": "0.5"})
+        data = ensure_iso_datetime(data, "learned_at", "updated_at")
         return UserBehaviorPattern(**data)
 
 
@@ -145,10 +132,9 @@ class KnowledgeBaseDocument:
     def from_dict(data: Dict[str, Any]) -> "KnowledgeBaseDocument":
         """Create from dictionary (reverse of to_dict)."""
         # Remove embedding if present (not meant to be serialized)
+        data = dict(data)
         data.pop("embedding", None)
 
         # Convert ISO string back to datetime
-        if data.get("uploaded_at"):
-            data["uploaded_at"] = datetime.fromisoformat(data["uploaded_at"])
-
+        data = ensure_iso_datetime(data, "uploaded_at")
         return KnowledgeBaseDocument(**data)

@@ -5,6 +5,8 @@ from datetime import datetime
 from typing import Any, Dict, List
 from uuid import uuid4
 
+from ..utils import ensure_iso_datetime
+
 
 @dataclass
 class Pattern:
@@ -55,7 +57,5 @@ class Pattern:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Pattern":
         """Deserialize from storage."""
-        data = data.copy()
-        data["first_detected"] = datetime.fromisoformat(data["first_detected"])
-        data["last_detected"] = datetime.fromisoformat(data["last_detected"])
+        data = ensure_iso_datetime(data, "first_detected", "last_detected")
         return cls(**data)
