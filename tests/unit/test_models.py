@@ -338,7 +338,7 @@ class TestRecommendation:
         assert restored.agent_name == original.agent_name
         assert restored.pattern_ids == original.pattern_ids
         assert restored.applied == original.applied
-        assert restored.effectiveness_score == original.effectiveness_score
+        assert float(restored.effectiveness_score) == original.effectiveness_score
 
 
 class TestModelEdgeCases:

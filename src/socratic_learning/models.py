@@ -7,7 +7,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any, Dict, List, Optional
 
-from .utils import ensure_decimals, ensure_iso_datetime, parse_decimal
+from .utils import ensure_decimals, ensure_iso_datetime
 
 
 @dataclass
