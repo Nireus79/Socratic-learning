@@ -1,6 +1,6 @@
 """Socratic Learning - Continuous learning system for AI agents."""
 
-from socratic_learning.analytics import AnalyticsCalculator, LearningEngine, MaturityCalculator
+from socratic_learning.analytics import AnalyticsCalculator, LearningEngine, MaturityCalculator, PatternDetector
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
 from socratic_learning.exceptions import (  # noqa: F401
     AggregationError,
@@ -50,6 +50,7 @@ __all__ = [
     "LearningTool",
     "Metric",
     "Pattern",
+    "PatternDetector",
     "QuestionEffectiveness",
     "Recommendation",
     "SocraticLearningSkill",
