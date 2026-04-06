@@ -2,9 +2,10 @@
 
 import json
 import sqlite3
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Generator
 
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
 from socratic_learning.storage.base import BaseLearningStore
@@ -16,6 +17,7 @@ class SQLiteLearningStore(BaseLearningStore):
     def __init__(self, db_path: str = "learning.db"):
         """Initialize SQLite store."""
         self.db_path = Path(db_path)
+        self._conn: Optional[sqlite3.Connection] = None
         self._init_database()
 
     def _init_database(self) -> None:
@@ -648,3 +650,276 @@ class SQLiteLearningStore(BaseLearningStore):
             effectiveness_score=row[14],
             metadata=json.loads(row[15]),
         )
+
+    def _get_connection(self) -> sqlite3.Connection:
+        """Get or create reusable connection for pooling."""
+        if self._conn is None:
+            self._conn = sqlite3.connect(str(self.db_path), check_same_thread=False)
+        return self._conn
+
+    def close_connection(self) -> None:
+        """Close the pooled connection."""
+        if self._conn:
+            self._conn.close()
+            self._conn = None
+
+    @contextmanager
+    def transaction(self) -> Generator[sqlite3.Connection, None, None]:
+        """Context manager for atomic transactions.
+
+        Usage:
+            with store.transaction() as conn:
+                cursor = conn.cursor()
+                # perform operations
+                # auto-rollback on exception, auto-commit on success
+        """
+        conn = self._get_connection()
+        try:
+            conn.execute("BEGIN IMMEDIATE")
+            yield conn
+            conn.commit()
+        except Exception:
+            conn.rollback()
+            raise
+
+    def batch_insert_interactions(self, interactions: List[Interaction]) -> List[Interaction]:
+        """Batch insert multiple interactions in a single transaction.
+
+        Args:
+            interactions: List of Interaction objects to insert
+
+        Returns:
+            List of inserted Interaction objects
+        """
+        with self.transaction() as conn:
+            cursor = conn.cursor()
+            for interaction in interactions:
+                cursor.execute(
+                    """
+                    INSERT INTO interactions VALUES
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                    (
+                        interaction.interaction_id,
+                        interaction.session_id,
+                        interaction.agent_name,
+                        interaction.timestamp.isoformat(),
+                        json.dumps(interaction.input_data),
+                        json.dumps(interaction.output_data),
+                        interaction.model_name,
+                        interaction.provider,
+                        interaction.input_tokens,
+                        interaction.output_tokens,
+                        interaction.cost_usd,
+                        interaction.duration_ms,
+                        1 if interaction.success else 0,
+                        interaction.error_message,
+                        interaction.user_rating,
+                        interaction.user_feedback,
+                        (
+                            interaction.feedback_timestamp.isoformat()
+                            if interaction.feedback_timestamp
+                            else None
+                        ),
+                        json.dumps(interaction.tags),
+                        json.dumps(interaction.metadata),
+                    ),
+                )
+        return interactions
+
+    def batch_insert_patterns(self, patterns: List[Pattern]) -> List[Pattern]:
+        """Batch insert multiple patterns in a single transaction.
+
+        Args:
+            patterns: List of Pattern objects to insert
+
+        Returns:
+            List of inserted Pattern objects
+        """
+        with self.transaction() as conn:
+            cursor = conn.cursor()
+            for pattern in patterns:
+                cursor.execute(
+                    """
+                    INSERT INTO patterns VALUES
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                    (
+                        pattern.pattern_id,
+                        pattern.pattern_type,
+                        pattern.name,
+                        pattern.description,
+                        pattern.first_detected.isoformat(),
+                        pattern.last_detected.isoformat(),
+                        pattern.occurrence_count,
+                        json.dumps(pattern.agent_names),
+                        json.dumps(pattern.session_ids),
+                        pattern.confidence,
+                        json.dumps(pattern.evidence),
+                        json.dumps(pattern.tags),
+                        json.dumps(pattern.metadata),
+                    ),
+                )
+        return patterns
+
+    def batch_insert_metrics(self, metrics: List[Metric]) -> List[Metric]:
+        """Batch insert multiple metrics in a single transaction.
+
+        Args:
+            metrics: List of Metric objects to insert
+
+        Returns:
+            List of inserted Metric objects
+        """
+        with self.transaction() as conn:
+            cursor = conn.cursor()
+            for metric in metrics:
+                cursor.execute(
+                    """
+                    INSERT INTO metrics VALUES
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                    (
+                        metric.metric_id,
+                        metric.agent_name,
+                        metric.session_id,
+                        metric.time_period_start.isoformat(),
+                        metric.time_period_end.isoformat(),
+                        metric.total_interactions,
+                        metric.successful_interactions,
+                        metric.failed_interactions,
+                        metric.success_rate,
+                        metric.avg_duration_ms,
+                        metric.max_duration_ms,
+                        metric.min_duration_ms,
+                        metric.total_input_tokens,
+                        metric.total_output_tokens,
+                        metric.total_cost_usd,
+                        metric.avg_rating,
+                        metric.total_feedback_count,
+                        metric.positive_feedback_count,
+                        json.dumps(metric.metadata),
+                    ),
+                )
+        return metrics
+
+    def batch_insert_recommendations(self, recommendations: List[Recommendation]) -> List[Recommendation]:
+        """Batch insert multiple recommendations in a single transaction.
+
+        Args:
+            recommendations: List of Recommendation objects to insert
+
+        Returns:
+            List of inserted Recommendation objects
+        """
+        with self.transaction() as conn:
+            cursor = conn.cursor()
+            for rec in recommendations:
+                cursor.execute(
+                    """
+                    INSERT INTO recommendations VALUES
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                    (
+                        rec.recommendation_id,
+                        rec.recommendation_type,
+                        rec.priority,
+                        rec.title,
+                        rec.description,
+                        rec.rationale,
+                        rec.agent_name,
+                        json.dumps(rec.pattern_ids),
+                        json.dumps(rec.metric_ids),
+                        rec.suggested_action,
+                        rec.expected_improvement,
+                        rec.created_at.isoformat(),
+                        1 if rec.applied else 0,
+                        (rec.applied_at.isoformat() if rec.applied_at else None),
+                        rec.effectiveness_score,
+                        json.dumps(rec.metadata),
+                    ),
+                )
+        return recommendations
+
+    def batch_update_patterns(self, patterns: List[Pattern]) -> List[Pattern]:
+        """Batch update multiple patterns in a single transaction.
+
+        Args:
+            patterns: List of Pattern objects to update
+
+        Returns:
+            List of updated Pattern objects
+        """
+        with self.transaction() as conn:
+            cursor = conn.cursor()
+            for pattern in patterns:
+                cursor.execute(
+                    """
+                    UPDATE patterns
+                    SET pattern_type = ?, name = ?, description = ?,
+                        first_detected = ?, last_detected = ?,
+                        occurrence_count = ?, agent_names = ?,
+                        session_ids = ?, confidence = ?,
+                        evidence = ?, tags = ?, metadata = ?
+                    WHERE pattern_id = ?
+                """,
+                    (
+                        pattern.pattern_type,
+                        pattern.name,
+                        pattern.description,
+                        pattern.first_detected.isoformat(),
+                        pattern.last_detected.isoformat(),
+                        pattern.occurrence_count,
+                        json.dumps(pattern.agent_names),
+                        json.dumps(pattern.session_ids),
+                        pattern.confidence,
+                        json.dumps(pattern.evidence),
+                        json.dumps(pattern.tags),
+                        json.dumps(pattern.metadata),
+                        pattern.pattern_id,
+                    ),
+                )
+        return patterns
+
+    def batch_update_recommendations(self, recommendations: List[Recommendation]) -> List[Recommendation]:
+        """Batch update multiple recommendations in a single transaction.
+
+        Args:
+            recommendations: List of Recommendation objects to update
+
+        Returns:
+            List of updated Recommendation objects
+        """
+        with self.transaction() as conn:
+            cursor = conn.cursor()
+            for rec in recommendations:
+                cursor.execute(
+                    """
+                    UPDATE recommendations
+                    SET recommendation_type = ?, priority = ?,
+                        title = ?, description = ?, rationale = ?,
+                        agent_name = ?, pattern_ids = ?,
+                        metric_ids = ?, suggested_action = ?,
+                        expected_improvement = ?, applied = ?,
+                        applied_at = ?, effectiveness_score = ?, metadata = ?
+                    WHERE recommendation_id = ?
+                """,
+                    (
+                        rec.recommendation_type,
+                        rec.priority,
+                        rec.title,
+                        rec.description,
+                        rec.rationale,
+                        rec.agent_name,
+                        json.dumps(rec.pattern_ids),
+                        json.dumps(rec.metric_ids),
+                        rec.suggested_action,
+                        rec.expected_improvement,
+                        1 if rec.applied else 0,
+                        (rec.applied_at.isoformat() if rec.applied_at else None),
+                        rec.effectiveness_score,
+                        json.dumps(rec.metadata),
+                        rec.recommendation_id,
+                    ),
+                )
+        return recommendations
