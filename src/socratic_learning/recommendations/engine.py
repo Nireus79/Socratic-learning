@@ -3,7 +3,10 @@
 from datetime import timezone
 from typing import Any, Optional
 
+from socratic_learning.analytics.pattern_detector import PatternDetector
+from socratic_learning.analytics.metrics_collector import MetricsCollector
 from socratic_learning.core import Recommendation
+from socratic_learning.recommendations.rules import RecommendationRules
 from socratic_learning.storage.base import BaseLearningStore
 
 
@@ -13,6 +16,8 @@ class RecommendationEngine:
     def __init__(self, store: BaseLearningStore):
         """Initialize recommendation engine with storage backend."""
         self.store = store
+        self.pattern_detector = PatternDetector(store)
+        self.metrics_collector = MetricsCollector(store)
 
     def generate_recommendations(
         self,
@@ -28,9 +33,92 @@ class RecommendationEngine:
         Returns:
             List of recommendations
         """
-        # Returns empty list as placeholder - metrics/patterns collection
-        # will be implemented via analytics module integration
-        return []
+        recommendations = []
+        all_patterns = []
+
+        # Detect all patterns
+        error_patterns = self.pattern_detector.detect_error_patterns(agent_name=agent_name)
+        all_patterns.extend(error_patterns)
+
+        success_patterns = self.pattern_detector.detect_success_patterns(agent_name=agent_name)
+        all_patterns.extend(success_patterns)
+
+        performance_patterns = self.pattern_detector.detect_performance_patterns(agent_name=agent_name)
+        all_patterns.extend(performance_patterns)
+
+        feedback_patterns = self.pattern_detector.detect_feedback_patterns(agent_name=agent_name)
+        all_patterns.extend(feedback_patterns)
+
+        # Get metrics
+        metrics = self.metrics_collector.calculate_metrics(agent_name=agent_name)
+
+        # Generate recommendations from error patterns
+        for pattern in error_patterns:
+            if pattern.confidence >= min_confidence:
+                rec = RecommendationRules.from_error_pattern(
+                    pattern=pattern,
+                    agent_name=agent_name or "unknown",
+                )
+                if rec:
+                    recommendations.append(rec)
+
+        # Generate recommendations from performance patterns
+        for pattern in performance_patterns:
+            if pattern.confidence >= min_confidence:
+                rec = RecommendationRules.from_performance_pattern(
+                    pattern=pattern,
+                    metric=metrics,
+                    agent_name=agent_name or "unknown",
+                )
+                if rec:
+                    recommendations.append(rec)
+
+        # Generate recommendations from low satisfaction (feedback patterns)
+        for pattern in feedback_patterns:
+            if pattern.confidence >= min_confidence:
+                # Low satisfaction patterns trigger quality improvement recommendations
+                if "low" in pattern.name.lower() or "dissatisfaction" in pattern.description.lower():
+                    rec = RecommendationRules.from_low_satisfaction(
+                        pattern=pattern,
+                        agent_name=agent_name or "unknown",
+                    )
+                else:
+                    # High satisfaction patterns
+                    rec = RecommendationRules.from_high_satisfaction(
+                        pattern=pattern,
+                        agent_name=agent_name or "unknown",
+                    )
+                if rec:
+                    recommendations.append(rec)
+
+        # Generate recommendations from success patterns
+        for pattern in success_patterns:
+            if pattern.confidence >= min_confidence:
+                rec = RecommendationRules.from_high_satisfaction(
+                    pattern=pattern,
+                    agent_name=agent_name or "unknown",
+                )
+                if rec:
+                    recommendations.append(rec)
+
+        # Store and return
+        stored_recommendations = []
+        for rec in recommendations:
+            # Set agent name if not already set
+            if not rec.agent_name and agent_name:
+                rec.agent_name = agent_name
+
+            # Store the recommendation
+            stored_rec = self.store.create_recommendation(rec)
+            stored_recommendations.append(stored_rec)
+
+        # Sort by priority and confidence
+        priority_order = {"high": 0, "medium": 1, "low": 2}
+        stored_recommendations.sort(
+            key=lambda r: (priority_order.get(r.priority, 3), -max([p.confidence for p in all_patterns if p.pattern_id in (r.pattern_ids or [])], default=0))
+        )
+
+        return stored_recommendations
 
     def get_high_priority_recommendations(
         self,
