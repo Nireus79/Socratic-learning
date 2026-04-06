@@ -2,6 +2,9 @@ LICENSE
 README.md
 pyproject.toml
 src/socratic_learning/__init__.py
+src/socratic_learning/exceptions.py
+src/socratic_learning/models.py
+src/socratic_learning/utils.py
 src/socratic_learning.egg-info/PKG-INFO
 src/socratic_learning.egg-info/SOURCES.txt
 src/socratic_learning.egg-info/dependency_links.txt
@@ -9,6 +12,9 @@ src/socratic_learning.egg-info/requires.txt
 src/socratic_learning.egg-info/top_level.txt
 src/socratic_learning/analytics/__init__.py
 src/socratic_learning/analytics/aggregator.py
+src/socratic_learning/analytics/analytics_calculator.py
+src/socratic_learning/analytics/learning_engine.py
+src/socratic_learning/analytics/maturity_calculator.py
 src/socratic_learning/analytics/metrics_collector.py
 src/socratic_learning/analytics/pattern_detector.py
 src/socratic_learning/analytics/reporter.py
@@ -20,6 +26,11 @@ src/socratic_learning/core/recommendation.py
 src/socratic_learning/feedback/__init__.py
 src/socratic_learning/feedback/analyzer.py
 src/socratic_learning/feedback/collector.py
+src/socratic_learning/integrations/__init__.py
+src/socratic_learning/integrations/langchain/__init__.py
+src/socratic_learning/integrations/langchain/tool.py
+src/socratic_learning/integrations/openclaw/__init__.py
+src/socratic_learning/integrations/openclaw/skill.py
 src/socratic_learning/recommendations/__init__.py
 src/socratic_learning/recommendations/engine.py
 src/socratic_learning/recommendations/export.py

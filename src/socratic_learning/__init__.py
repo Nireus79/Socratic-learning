@@ -1,7 +1,31 @@
 """Socratic Learning - Continuous learning system for AI agents."""
 
-from socratic_learning.analytics import AnalyticsCalculator, LearningEngine, MaturityCalculator
+from socratic_learning.analytics import (
+    AnalyticsCalculator,
+    CohortAnalyzer,
+    CohortComparison,
+    CohortMetrics,
+    LearningEngine,
+    MaturityCalculator,
+    PatternDetector,
+    SegmentationStrategy,
+)
+from socratic_learning.async_learning import (
+    AsyncBatchProcessor,
+    AsyncLearningAnalyzer,
+    AsyncLearningEngine,
+)
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
+from socratic_learning.predictions import (
+    ChurnPrediction,
+    ChurnPredictor,
+    DifficultyPrediction,
+    DifficultyPredictor,
+    LearningOutcomePrediction,
+    LearningOutcomePredictor,
+    SkillGapAnalyzer,
+    SkillGapPrediction,
+)
 from socratic_learning.exceptions import (  # noqa: F401
     AggregationError,
     AnalyticsException,
@@ -50,6 +74,7 @@ __all__ = [
     "LearningTool",
     "Metric",
     "Pattern",
+    "PatternDetector",
     "QuestionEffectiveness",
     "Recommendation",
     "SocraticLearningSkill",
@@ -57,6 +82,23 @@ __all__ = [
     # Analytics
     "AnalyticsCalculator",
     "MaturityCalculator",
+    "CohortAnalyzer",
+    "CohortMetrics",
+    "CohortComparison",
+    "SegmentationStrategy",
+    # Async Learning
+    "AsyncLearningEngine",
+    "AsyncBatchProcessor",
+    "AsyncLearningAnalyzer",
+    # Predictions
+    "LearningOutcomePredictor",
+    "LearningOutcomePrediction",
+    "ChurnPredictor",
+    "ChurnPrediction",
+    "DifficultyPredictor",
+    "DifficultyPrediction",
+    "SkillGapAnalyzer",
+    "SkillGapPrediction",
     # Storage
     "BaseLearningStore",
     "SQLiteLearningStore",

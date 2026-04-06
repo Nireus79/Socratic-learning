@@ -32,18 +32,17 @@ def logger(store):
 @pytest.fixture
 def metrics_collector(store):
     """Create a metrics collector."""
-    # MetricsCollector not implemented yet - placeholder
-    return None
+    from socratic_learning.analytics.metrics_collector import MetricsCollector
+    return MetricsCollector(store)
 
 
 @pytest.fixture
 def pattern_detector(store):
     """Create a pattern detector."""
-    # PatternDetector not implemented yet - placeholder
-    return None
+    from socratic_learning.analytics.pattern_detector import PatternDetector
+    return PatternDetector(store)
 
 
-@pytest.mark.skip(reason="MetricsCollector not implemented")
 class TestMetricsCollector:
     """Test MetricsCollector."""
 
@@ -209,7 +208,6 @@ class TestMetricsCollector:
         assert comparison["duration_improvement"] > 0  # Second metric is faster
 
 
-@pytest.mark.skip(reason="PatternDetector not implemented")
 class TestPatternDetector:
     """Test PatternDetector."""
 
