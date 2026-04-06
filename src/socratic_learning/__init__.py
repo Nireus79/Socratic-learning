@@ -1,6 +1,11 @@
 """Socratic Learning - Continuous learning system for AI agents."""
 
 from socratic_learning.analytics import AnalyticsCalculator, LearningEngine, MaturityCalculator, PatternDetector
+from socratic_learning.async_learning import (
+    AsyncBatchProcessor,
+    AsyncLearningAnalyzer,
+    AsyncLearningEngine,
+)
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
 from socratic_learning.predictions import (
     ChurnPrediction,
@@ -68,6 +73,10 @@ __all__ = [
     # Analytics
     "AnalyticsCalculator",
     "MaturityCalculator",
+    # Async Learning
+    "AsyncLearningEngine",
+    "AsyncBatchProcessor",
+    "AsyncLearningAnalyzer",
     # Predictions
     "LearningOutcomePredictor",
     "LearningOutcomePrediction",
