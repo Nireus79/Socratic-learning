@@ -1,6 +1,15 @@
 """Socratic Learning - Continuous learning system for AI agents."""
 
-from socratic_learning.analytics import AnalyticsCalculator, LearningEngine, MaturityCalculator, PatternDetector
+from socratic_learning.analytics import (
+    AnalyticsCalculator,
+    CohortAnalyzer,
+    CohortComparison,
+    CohortMetrics,
+    LearningEngine,
+    MaturityCalculator,
+    PatternDetector,
+    SegmentationStrategy,
+)
 from socratic_learning.async_learning import (
     AsyncBatchProcessor,
     AsyncLearningAnalyzer,
@@ -73,6 +82,10 @@ __all__ = [
     # Analytics
     "AnalyticsCalculator",
     "MaturityCalculator",
+    "CohortAnalyzer",
+    "CohortMetrics",
+    "CohortComparison",
+    "SegmentationStrategy",
     # Async Learning
     "AsyncLearningEngine",
     "AsyncBatchProcessor",
