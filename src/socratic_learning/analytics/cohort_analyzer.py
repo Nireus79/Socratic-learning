@@ -207,9 +207,8 @@ class CohortAnalyzer:
             learning_velocity_delta=velocity_delta,
             retention_delta=retention_delta,
             statistical_significance=0.05,  # Placeholder
-            effect_size=abs(success_delta) / max(
-                metrics_a.avg_success_rate, metrics_b.avg_success_rate, 0.1
-            ),
+            effect_size=abs(success_delta)
+            / max(metrics_a.avg_success_rate, metrics_b.avg_success_rate, 0.1),
             winner_cohort=winner,
         )
 

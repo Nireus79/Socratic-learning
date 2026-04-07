@@ -33,6 +33,7 @@ def logger(store):
 def metrics_collector(store):
     """Create a metrics collector."""
     from socratic_learning.analytics.metrics_collector import MetricsCollector
+
     return MetricsCollector(store)
 
 
@@ -40,6 +41,7 @@ def metrics_collector(store):
 def pattern_detector(store):
     """Create a pattern detector."""
     from socratic_learning.analytics.pattern_detector import PatternDetector
+
     return PatternDetector(store)
 
 

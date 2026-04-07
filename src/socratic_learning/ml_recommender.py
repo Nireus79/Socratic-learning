@@ -1,4 +1,5 @@
 """ML-based recommendation engine for socratic-learning."""
+
 import logging
 import pickle
 from dataclasses import dataclass, field, asdict
@@ -14,9 +15,11 @@ from sklearn.metrics import accuracy_score, f1_score
 
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class UserProfile:
     """User profile with learning metrics."""
+
     user_id: str
     total_questions_answered: int = 0
     average_answer_quality: float = 0.0
@@ -26,19 +29,28 @@ class UserProfile:
     skill_levels: Dict[str, float] = field(default_factory=dict)
     engagement_score: float = 0.5
     created_at: datetime = field(default_factory=datetime.now)
-    
+
     def to_feature_vector(self) -> np.ndarray:
         """Convert profile to ML feature vector."""
-        features = [self.total_questions_answered, self.average_answer_quality, self.days_active, self.last_activity_days_ago, self.questions_per_day, self.engagement_score]
+        features = [
+            self.total_questions_answered,
+            self.average_answer_quality,
+            self.days_active,
+            self.last_activity_days_ago,
+            self.questions_per_day,
+            self.engagement_score,
+        ]
         skills = sorted(self.skill_levels.values())[:10]
         features.extend(skills)
         features.extend([0.0] * (10 - len(skills)))
         return np.array(features, dtype=np.float32)
 
+
 class MLRecommender:
     """ML-based recommendation engine using scikit-learn."""
+
     MODEL_VERSION = "1.0"
-    
+
     def __init__(self, model_dir: Optional[str] = None):
         self.model_dir = Path(model_dir or "./models")
         self.model_dir.mkdir(parents=True, exist_ok=True)
@@ -70,7 +82,11 @@ class MLRecommender:
             X = user_profile.to_feature_vector().reshape(1, -1)
             X_scaled = self.scaler.transform(X)
             proba = self.churn_model.predict_proba(X_scaled)[0][1]
-            risk = "critical" if proba > 0.7 else "high" if proba > 0.5 else "medium" if proba > 0.3 else "low"
+            risk = (
+                "critical"
+                if proba > 0.7
+                else "high" if proba > 0.5 else "medium" if proba > 0.3 else "low"
+            )
             return float(proba), risk
         except Exception as e:
             logger.error(f"Error predicting churn: {e}")

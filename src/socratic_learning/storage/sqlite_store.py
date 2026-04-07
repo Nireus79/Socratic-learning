@@ -803,7 +803,9 @@ class SQLiteLearningStore(BaseLearningStore):
                 )
         return metrics
 
-    def batch_insert_recommendations(self, recommendations: List[Recommendation]) -> List[Recommendation]:
+    def batch_insert_recommendations(
+        self, recommendations: List[Recommendation]
+    ) -> List[Recommendation]:
         """Batch insert multiple recommendations in a single transaction.
 
         Args:
@@ -881,7 +883,9 @@ class SQLiteLearningStore(BaseLearningStore):
                 )
         return patterns
 
-    def batch_update_recommendations(self, recommendations: List[Recommendation]) -> List[Recommendation]:
+    def batch_update_recommendations(
+        self, recommendations: List[Recommendation]
+    ) -> List[Recommendation]:
         """Batch update multiple recommendations in a single transaction.
 
         Args:

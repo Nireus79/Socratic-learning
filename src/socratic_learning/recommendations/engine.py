@@ -43,7 +43,9 @@ class RecommendationEngine:
         success_patterns = self.pattern_detector.detect_success_patterns(agent_name=agent_name)
         all_patterns.extend(success_patterns)
 
-        performance_patterns = self.pattern_detector.detect_performance_patterns(agent_name=agent_name)
+        performance_patterns = self.pattern_detector.detect_performance_patterns(
+            agent_name=agent_name
+        )
         all_patterns.extend(performance_patterns)
 
         feedback_patterns = self.pattern_detector.detect_feedback_patterns(agent_name=agent_name)
@@ -77,7 +79,10 @@ class RecommendationEngine:
         for pattern in feedback_patterns:
             if pattern.confidence >= min_confidence:
                 # Low satisfaction patterns trigger quality improvement recommendations
-                if "low" in pattern.name.lower() or "dissatisfaction" in pattern.description.lower():
+                if (
+                    "low" in pattern.name.lower()
+                    or "dissatisfaction" in pattern.description.lower()
+                ):
                     rec = RecommendationRules.from_low_satisfaction(
                         pattern=pattern,
                         agent_name=agent_name or "unknown",
@@ -115,7 +120,13 @@ class RecommendationEngine:
         # Sort by priority and confidence
         priority_order = {"high": 0, "medium": 1, "low": 2}
         stored_recommendations.sort(
-            key=lambda r: (priority_order.get(r.priority, 3), -max([p.confidence for p in all_patterns if p.pattern_id in (r.pattern_ids or [])], default=0))
+            key=lambda r: (
+                priority_order.get(r.priority, 3),
+                -max(
+                    [p.confidence for p in all_patterns if p.pattern_id in (r.pattern_ids or [])],
+                    default=0,
+                ),
+            )
         )
 
         return stored_recommendations

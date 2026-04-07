@@ -116,10 +116,7 @@ class AsyncLearningEngine:
         Returns:
             List of metric dictionaries
         """
-        tasks = [
-            self.calculate_learning_metrics_async(profile)
-            for profile in profiles
-        ]
+        tasks = [self.calculate_learning_metrics_async(profile) for profile in profiles]
 
         return await asyncio.gather(*tasks)
 
@@ -233,9 +230,7 @@ class AsyncBatchProcessor:
             batch = items[i : i + self.batch_size]
             self.logger.debug(f"Processing batch {i // self.batch_size + 1}")
 
-            batch_results = await asyncio.gather(
-                *[bounded_processor(item) for item in batch]
-            )
+            batch_results = await asyncio.gather(*[bounded_processor(item) for item in batch])
             results.extend(batch_results)
 
         return results
@@ -266,9 +261,7 @@ class AsyncBatchProcessor:
             batch = items[i : i + self.batch_size]
             self.logger.debug(f"Processing batch {i // self.batch_size + 1}")
 
-            batch_results = await asyncio.gather(
-                *[bounded_processor(item) for item in batch]
-            )
+            batch_results = await asyncio.gather(*[bounded_processor(item) for item in batch])
             yield batch_results
 
 
@@ -306,7 +299,8 @@ class AsyncLearningAnalyzer:
             "total_users": len(profiles),
             "avg_engagement": sum(m["engagement_score"] for m in metrics_list) / len(metrics_list),
             "avg_success_rate": sum(m["success_rate"] for m in metrics_list) / len(metrics_list),
-            "avg_learning_velocity": sum(m["learning_velocity"] for m in metrics_list) / len(metrics_list),
+            "avg_learning_velocity": sum(m["learning_velocity"] for m in metrics_list)
+            / len(metrics_list),
             "experience_levels": self._count_levels(metrics_list),
             "total_topics_explored": sum(m["topics_explored"] for m in metrics_list),
             "total_projects": sum(m["projects_completed"] for m in metrics_list),
@@ -327,10 +321,7 @@ class AsyncLearningAnalyzer:
         Returns:
             Comparison results for all cohorts
         """
-        tasks = {
-            name: self.analyze_cohort_async(data)
-            for name, data in cohorts.items()
-        }
+        tasks = {name: self.analyze_cohort_async(data) for name, data in cohorts.items()}
 
         results = {}
         for name, task in tasks.items():

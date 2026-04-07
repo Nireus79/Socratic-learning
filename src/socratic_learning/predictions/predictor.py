@@ -187,9 +187,7 @@ class LearningOutcomePredictor(MLPredictor):
             "attention",
             "completion",
         ]
-        importance = dict(
-            zip(feature_names, self.model.feature_importances_)
-        )
+        importance = dict(zip(feature_names, self.model.feature_importances_))
 
         return LearningOutcomePrediction(
             prediction=predicted_score / 100,
