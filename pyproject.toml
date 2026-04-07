@@ -37,6 +37,7 @@ requires-python = ">=3.9"
 
 dependencies = [
     "pydantic>=2.0.0",
+    "socratic-core>=0.2.0",
 ]
 
 [project.optional-dependencies]

@@ -8,11 +8,10 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from collections import defaultdict
 import numpy as np
 
-from socratic_agents.agents import Agent
-from socratic_agents.events import EventType
+from socratic_core import Agent, EventType
 
 if TYPE_CHECKING:
-    from socratic_agents.orchestration import AgentOrchestrator
+    from socratic_core import AgentOrchestrator
 
 logger = logging.getLogger(__name__)
 
