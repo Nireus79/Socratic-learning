@@ -4,9 +4,15 @@ import asyncio
 import logging
 from dataclasses import dataclass, field, asdict
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from collections import defaultdict
 import numpy as np
+
+from socratic_agents.agents import Agent
+from socratic_agents.events import EventType
+
+if TYPE_CHECKING:
+    from socratic_agents.orchestration import AgentOrchestrator
 
 logger = logging.getLogger(__name__)
 
@@ -56,14 +62,108 @@ class PersonalizedLearningPath:
     updated_at: datetime = field(default_factory=datetime.now)
 
 
-class UserLearningAgent:
-    """Enhanced user learning agent with pattern detection."""
+class UserLearningAgent(Agent):
+    """Enhanced user learning agent with pattern detection and orchestrator integration."""
 
-    def __init__(self):
+    def __init__(self, name: str, orchestrator: "AgentOrchestrator"):
+        """
+        Initialize the user learning agent.
+
+        Args:
+            name: Display name for the agent
+            orchestrator: Reference to the AgentOrchestrator for coordination
+        """
+        super().__init__(name, orchestrator)
         self.sessions: Dict[str, UserLearningSession] = {}
         self.user_histories: Dict[str, List[UserLearningSession]] = defaultdict(list)
         self.detected_patterns: Dict[str, List[LearningPattern]] = defaultdict(list)
         self.learning_paths: Dict[str, PersonalizedLearningPath] = {}
+
+    def process(self, request: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Process a synchronous learning request.
+
+        Routes to appropriate async method based on action type.
+
+        Args:
+            request: Dictionary with 'action' and action-specific parameters
+
+        Returns:
+            Dictionary containing the response data
+        """
+        action = request.get("action", "")
+
+        try:
+            if action == "start_session":
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                try:
+                    result = loop.run_until_complete(
+                        self.start_session(request.get("user_id"))
+                    )
+                    return {"status": "success", "session": asdict(result)}
+                finally:
+                    loop.close()
+
+            elif action == "end_session":
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                try:
+                    result = loop.run_until_complete(
+                        self.end_session(request.get("session_id"))
+                    )
+                    return {"status": "success", "session": asdict(result) if result else None}
+                finally:
+                    loop.close()
+
+            elif action == "detect_patterns":
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                try:
+                    result = loop.run_until_complete(
+                        self.detect_patterns(request.get("user_id"))
+                    )
+                    return {"status": "success", "patterns": [asdict(p) for p in result]}
+                finally:
+                    loop.close()
+
+            elif action == "generate_learning_path":
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                try:
+                    result = loop.run_until_complete(
+                        self.generate_learning_path(
+                            request.get("user_id"),
+                            request.get("current_skills", {}),
+                            request.get("target_skills", {}),
+                            request.get("learning_velocity", 1.0),
+                        )
+                    )
+                    return {"status": "success", "path": asdict(result)}
+                finally:
+                    loop.close()
+
+            elif action == "get_user_progress":
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                try:
+                    result = loop.run_until_complete(
+                        self.get_user_progress(request.get("user_id"))
+                    )
+                    return {"status": "success", "progress": result}
+                finally:
+                    loop.close()
+
+            else:
+                return {"status": "error", "message": f"Unknown action: {action}"}
+
+        except Exception as e:
+            self.log(f"Error processing action {action}: {str(e)}", level="ERROR")
+            self.emit_event(
+                EventType.AGENT_ERROR,
+                {"action": action, "error": str(e)},
+            )
+            return {"status": "error", "message": str(e)}
 
     async def start_session(self, user_id: str) -> UserLearningSession:
         """Start a new learning session."""
@@ -71,6 +171,10 @@ class UserLearningAgent:
             session_id=f"{user_id}_{datetime.now().timestamp()}", user_id=user_id
         )
         self.sessions[session.session_id] = session
+        self.emit_event(
+            EventType.LEARNING_STARTED,
+            {"user_id": user_id, "session_id": session.session_id},
+        )
         return session
 
     async def end_session(self, session_id: str) -> UserLearningSession:
@@ -79,6 +183,14 @@ class UserLearningAgent:
             session = self.sessions[session_id]
             session.ended_at = datetime.now()
             self.user_histories[session.user_id].append(session)
+            self.emit_event(
+                EventType.LEARNING_COMPLETED,
+                {
+                    "user_id": session.user_id,
+                    "session_id": session_id,
+                    "completion_rate": session.completion_rate(),
+                },
+            )
             return session
         return None
 
@@ -108,6 +220,17 @@ class UserLearningAgent:
                 )
 
         self.detected_patterns[user_id] = patterns
+
+        if patterns:
+            self.emit_event(
+                EventType.PATTERN_DETECTED,
+                {
+                    "user_id": user_id,
+                    "pattern_count": len(patterns),
+                    "patterns": [asdict(p) for p in patterns],
+                },
+            )
+
         return patterns
 
     async def generate_learning_path(
@@ -138,6 +261,17 @@ class UserLearningAgent:
         )
 
         self.learning_paths[user_id] = path
+
+        self.emit_event(
+            EventType.RECOMMENDATION_GENERATED,
+            {
+                "user_id": user_id,
+                "current_level": current_avg,
+                "target_level": target_avg,
+                "estimated_days": estimated_days,
+            },
+        )
+
         return path
 
     async def get_user_progress(self, user_id: str) -> Dict[str, Any]:
@@ -149,7 +283,7 @@ class UserLearningAgent:
         total_answered = sum(s.questions_answered for s in sessions)
         total_correct = sum(s.correct_answers for s in sessions)
 
-        return {
+        progress_data = {
             "total_sessions": len(sessions),
             "total_questions_answered": total_answered,
             "overall_completion_rate": (
@@ -157,3 +291,10 @@ class UserLearningAgent:
             ),
             "patterns_detected": len(self.detected_patterns.get(user_id, [])),
         }
+
+        self.emit_event(
+            EventType.BEHAVIOR_ANALYZED,
+            {"user_id": user_id, "progress": progress_data},
+        )
+
+        return progress_data
