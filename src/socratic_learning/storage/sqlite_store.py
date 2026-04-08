@@ -1,4 +1,5 @@
 """SQLite-based storage for learning data."""
+
 import threading
 
 import json
