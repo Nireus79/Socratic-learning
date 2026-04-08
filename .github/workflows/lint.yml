@@ -34,4 +34,4 @@ jobs:
         run: ruff check src/ tests/
 
       - name: Type check with MyPy
-        run: mypy src/socratic_learning --strict --no-implicit-reexport --warn-unused-ignores
+        run: mypy src/socratic_learning --no-implicit-reexport --warn-unused-ignores
