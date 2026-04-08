@@ -1,4 +1,5 @@
 """SQLite-based storage for learning data."""
+import threading
 
 import json
 import sqlite3
@@ -654,7 +655,7 @@ class SQLiteLearningStore(BaseLearningStore):
     def _get_connection(self) -> sqlite3.Connection:
         """Get or create reusable connection for pooling."""
         if self._conn is None:
-            self._conn = sqlite3.connect(str(self.db_path), check_same_thread=False)
+            self._conn = sqlite3.connect(str(self.db_path))
         return self._conn
 
     def close_connection(self) -> None:
