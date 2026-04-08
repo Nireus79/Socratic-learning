@@ -2,12 +2,12 @@
 
 import asyncio
 import logging
-from dataclasses import dataclass, field, asdict
-from datetime import datetime, timedelta
-from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from collections import defaultdict
-import numpy as np
+from dataclasses import asdict, dataclass, field
+from datetime import datetime
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
+import numpy as np
 from socratic_agents.agents import Agent
 from socratic_agents.events import EventType
 

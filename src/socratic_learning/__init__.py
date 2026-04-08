@@ -16,16 +16,6 @@ from socratic_learning.async_learning import (
     AsyncLearningEngine,
 )
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
-from socratic_learning.predictions import (
-    ChurnPrediction,
-    ChurnPredictor,
-    DifficultyPrediction,
-    DifficultyPredictor,
-    LearningOutcomePrediction,
-    LearningOutcomePredictor,
-    SkillGapAnalyzer,
-    SkillGapPrediction,
-)
 from socratic_learning.exceptions import (  # noqa: F401
     AggregationError,
     AnalyticsException,
@@ -61,6 +51,16 @@ from socratic_learning.models import (
     KnowledgeBaseDocument,
     QuestionEffectiveness,
     UserBehaviorPattern,
+)
+from socratic_learning.predictions import (
+    ChurnPrediction,
+    ChurnPredictor,
+    DifficultyPrediction,
+    DifficultyPredictor,
+    LearningOutcomePrediction,
+    LearningOutcomePredictor,
+    SkillGapAnalyzer,
+    SkillGapPrediction,
 )
 from socratic_learning.storage import BaseLearningStore, SQLiteLearningStore
 from socratic_learning.tracking import InteractionLogger, Session

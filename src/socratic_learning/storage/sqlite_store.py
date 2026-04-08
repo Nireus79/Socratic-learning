@@ -1,13 +1,11 @@
 """SQLite-based storage for learning data."""
 
-import threading
-
 import json
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, List, Optional, Generator
+from typing import Any, Generator, List, Optional
 
 from socratic_learning.core import Interaction, Metric, Pattern, Recommendation
 from socratic_learning.storage.base import BaseLearningStore

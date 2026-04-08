@@ -230,7 +230,6 @@ class CohortAnalyzer:
         if cohort_id not in self.cohorts:
             raise ValueError(f"Cohort {cohort_id} not found")
 
-        users = self.cohorts[cohort_id]
         retention = []
 
         # Simulate retention curve (would use real data in production)
