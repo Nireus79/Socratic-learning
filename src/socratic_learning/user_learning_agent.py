@@ -98,7 +98,7 @@ class UserLearningAgent(Agent):
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 try:
-                    result = loop.run_until_complete(self.start_session(request.get("user_id")))
+                    result = loop.run_until_complete(self.start_session(request.get("user_id")))  # type: ignore
                     return {"status": "success", "session": asdict(result)}
                 finally:
                     loop.close()
@@ -107,7 +107,7 @@ class UserLearningAgent(Agent):
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 try:
-                    result = loop.run_until_complete(self.end_session(request.get("session_id")))
+                    result = loop.run_until_complete(self.end_session(request.get("session_id")))  # type: ignore
                     return {"status": "success", "session": asdict(result) if result else None}
                 finally:
                     loop.close()
@@ -116,7 +116,7 @@ class UserLearningAgent(Agent):
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 try:
-                    result = loop.run_until_complete(self.detect_patterns(request.get("user_id")))
+                    result = loop.run_until_complete(self.detect_patterns(request.get("user_id")))  # type: ignore
                     return {"status": "success", "patterns": [asdict(p) for p in result]}
                 finally:
                     loop.close()
