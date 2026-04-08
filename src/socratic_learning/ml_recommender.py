@@ -83,7 +83,11 @@ class MLRecommender:
             risk = (
                 "critical"
                 if proba > 0.7
-                else "high" if proba > 0.5 else "medium" if proba > 0.3 else "low"
+                else "high"
+                if proba > 0.5
+                else "medium"
+                if proba > 0.3
+                else "low"
             )
             return float(proba), risk
         except Exception as e:

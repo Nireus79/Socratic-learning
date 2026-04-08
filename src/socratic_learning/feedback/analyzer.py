@@ -58,7 +58,9 @@ class FeedbackAnalyzer:
             trend = (
                 "improving"
                 if second_half_avg > first_half_avg
-                else "declining" if second_half_avg < first_half_avg else "stable"
+                else "declining"
+                if second_half_avg < first_half_avg
+                else "stable"
             )
         else:
             first_half_avg = avg_rating

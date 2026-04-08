@@ -26,7 +26,8 @@ class SQLiteLearningStore(BaseLearningStore):
         cursor = conn.cursor()
 
         # Interactions table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS interactions (
                 interaction_id TEXT PRIMARY KEY,
                 session_id TEXT NOT NULL,
@@ -48,7 +49,8 @@ class SQLiteLearningStore(BaseLearningStore):
                 tags TEXT NOT NULL,
                 metadata TEXT NOT NULL
             )
-        """)
+        """
+        )
 
         # Indexes for fast queries
         cursor.execute(
@@ -62,7 +64,8 @@ class SQLiteLearningStore(BaseLearningStore):
         )
 
         # Patterns table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS patterns (
                 pattern_id TEXT PRIMARY KEY,
                 pattern_type TEXT NOT NULL,
@@ -78,7 +81,8 @@ class SQLiteLearningStore(BaseLearningStore):
                 tags TEXT NOT NULL,
                 metadata TEXT NOT NULL
             )
-        """)
+        """
+        )
 
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_pattern_type " "ON patterns(pattern_type)")
         cursor.execute(
@@ -86,7 +90,8 @@ class SQLiteLearningStore(BaseLearningStore):
         )
 
         # Metrics table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS metrics (
                 metric_id TEXT PRIMARY KEY,
                 agent_name TEXT,
@@ -108,12 +113,14 @@ class SQLiteLearningStore(BaseLearningStore):
                 positive_feedback_count INTEGER DEFAULT 0,
                 metadata TEXT NOT NULL
             )
-        """)
+        """
+        )
 
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_metric_agent " "ON metrics(agent_name)")
 
         # Recommendations table
-        cursor.execute("""
+        cursor.execute(
+            """
             CREATE TABLE IF NOT EXISTS recommendations (
                 recommendation_id TEXT PRIMARY KEY,
                 recommendation_type TEXT NOT NULL,
@@ -132,7 +139,8 @@ class SQLiteLearningStore(BaseLearningStore):
                 effectiveness_score REAL,
                 metadata TEXT NOT NULL
             )
-        """)
+        """
+        )
 
         cursor.execute(
             "CREATE INDEX IF NOT EXISTS idx_recommendation_priority " "ON recommendations(priority)"
