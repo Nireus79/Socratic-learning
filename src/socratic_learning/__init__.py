@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Socratic Learning - Learning Analytics and Tracking
 

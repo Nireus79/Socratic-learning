@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Learning-related data models for user behavior tracking and personalization.
 """
