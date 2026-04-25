@@ -48,6 +48,7 @@ workflow = ["socratic-workflow>=0.1.1"]
 nexus = ["socratic-nexus>=0.3.6"]
 openclaw = []
 langchain = ["langchain>=0.1.0"]
+langraph = ["langgraph>=0.0.1"]
 
 all = [
     "socratic-agents>=0.1.3",
