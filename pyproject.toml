@@ -45,7 +45,7 @@ dependencies = [
 agents = ["socratic-agents>=0.1.3"]
 rag = ["socratic-rag>=0.1.0"]
 workflow = ["socratic-workflow>=0.1.1"]
-nexus = ["socrates-nexus>=0.3.1"]
+nexus = ["socratic-nexus>=0.3.6"]
 openclaw = []
 langchain = ["langchain>=0.1.0"]
 
@@ -53,7 +53,7 @@ all = [
     "socratic-agents>=0.1.3",
     "socratic-rag>=0.1.0",
     "socratic-workflow>=0.1.1",
-    "socrates-nexus>=0.3.1",
+    "socratic-nexus>=0.3.6",
     "langchain>=0.1.0",
 ]
 
