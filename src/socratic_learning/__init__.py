@@ -17,7 +17,7 @@ Main Components:
 from .learning import KnowledgeBaseDocument, QuestionEffectiveness, UserBehaviorPattern
 from .learning_engine import LearningEngine
 
-__version__ = "0.1.5"
+__version__ = "0.2.0"
 __all__ = [
     "LearningEngine",
     "QuestionEffectiveness",

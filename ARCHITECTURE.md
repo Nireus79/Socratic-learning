@@ -1,166 +1,259 @@
 # socratic-learning Architecture
 
-Adaptive learning system that personalizes educational content and progression
+Continuous learning system for agent behavior tracking and improvement.
 
-## System Architecture
+## System Overview
 
-socratic-learning creates personalized educational experiences by adapting content difficulty, pacing, and teaching methods to individual learner profiles.
-
-### Component Overview
-
-```
-Learner Input
-    │
-    ├── Profile Data
-    ├── Performance History
-    └── Learning Preferences
-         │
-Learner Modeling
-    │
-    ├── Profile Builder
-    ├── Knowledge Tracker
-    └── Learning Analyzer
-         │
-Adaptation Engine
-    │
-    ├── Difficulty Calibrator
-    ├── Pacing Engine
-    └── Method Selector
-         │
-Content Management
-    │
-    ├── Content Repository
-    ├── Content Adapter
-    └── Path Generator
-         │
-Delivery & Feedback
-    │
-    ├── Question Generator
-    ├── Response Analyzer
-    └── Progress Tracker
-```
+socratic-learning tracks agent interactions, analyzes behavior patterns, identifies improvement opportunities, and exports data for model fine-tuning.
 
 ## Core Components
 
-### 1. Learner Model
+### 1. LearningEngine
 
-**Comprehensive learner profiling**:
-- Build learner profiles
-- Track knowledge state
-- Assess learning styles
-- Monitor progress
-- Identify strengths/weaknesses
+Main orchestrator for the learning system:
+- `create_session()` - Start tracking a learning session
+- `record_interaction()` - Log agent interaction
+- `get_session_metrics()` - Retrieve learning metrics
+- `get_behavior_pattern()` - Analyze behavior patterns
+- `detect_patterns()` - Find behavioral patterns
+- `detect_anomalies()` - Identify unusual behavior
+- `get_recommendations()` - Get improvement suggestions
+- `export_for_finetuning()` - Export training data
+- `save_finetuning_data()` - Save to file
 
-### 2. Progression Engine
+### 2. Data Models
 
-**Adaptive path generation**:
-- Determine optimal next topic
-- Adjust difficulty based on performance
-- Manage prerequisite checking
-- Optimize learning sequence
+#### UserBehaviorPattern
+Represents learned agent behavior:
+- `learning_style` - How agent prefers to work
+- `preferred_interaction_type` - Favored interaction modes
+- `avg_confidence` - Average decision confidence
+- `error_recovery_time` - Speed to recover from errors
+- `effectiveness_score` - Overall effectiveness metric
 
-### 3. Content Adapter
+#### QuestionEffectiveness
+Tracks question quality and impact:
+- `question_id` - Unique identifier
+- `question_text` - The question itself
+- `effectiveness_score` - How effective was question
+- `usage_count` - Times question was used
+- `positive_outcomes` - Successful outcomes
+- `improved_areas` - What areas improved
 
-**Personalize educational material**:
-- Customize difficulty level
-- Adjust explanation style
-- Provide alternative examples
-- Generate personalized problems
+#### KnowledgeBaseDocument
+Represents learned information:
+- `doc_id` - Document identifier
+- `content` - Learning content
+- `relevance_score` - How relevant to current task
+- `effectiveness` - How much did it help
+- `created_date` - When learned
+- `last_used_date` - Most recent use
 
-### 4. Analytics Engine
+### 3. Learning Data Flow
 
-**Track and analyze learning**:
-- Measure understanding
-- Track progress metrics
-- Identify learning gaps
-- Generate reports
-- Predict outcomes
+```
+Agent Interactions
+    |
+    v
+Record in Session
+    |
+    v
+Analyze Patterns
+    |
+    +---> Behavior patterns
+    +---> Effectiveness metrics
+    +---> Anomalies
+    |
+    v
+Generate Recommendations
+    |
+    v
+Export for Fine-tuning
+```
 
-## Data Flow
+## Component Architecture
 
-### Learning Cycle
+```
+LearningEngine (Main)
+    |
+    ├-- Session Management
+    │   ├-- create_session()
+    │   └-- session_storage
+    |
+    ├-- Interaction Tracking
+    │   ├-- record_interaction()
+    │   └-- interaction_store
+    |
+    ├-- Pattern Detection
+    │   ├-- detect_patterns()
+    │   ├-- detect_anomalies()
+    │   └-- behavior_analyzer
+    |
+    ├-- Recommendations
+    │   ├-- get_recommendations()
+    │   └-- recommender
+    |
+    └-- Export
+        ├-- export_for_finetuning()
+        └-- data_exporter
+```
 
-1. **Learner Initialization**
-   - Assess baseline knowledge
-   - Identify learning style
-   - Set learning goals
-   - Create initial profile
+## Session-Based Learning
 
-2. **Profile Analysis**
-   - Analyze current knowledge
-   - Identify learning patterns
-   - Assess readiness
-   - Determine next steps
+Each learning session tracks:
+1. **Session metadata**
+   - Session ID
+   - Agent ID
+   - Project ID
+   - Phase/type
+   - Start time
 
-3. **Content Selection**
-   - Choose optimal topic
-   - Select difficulty level
-   - Prepare teaching materials
-   - Generate questions
+2. **Interactions** (recorded during session)
+   - Interaction type (question, analysis, decision, etc.)
+   - Quality metrics
+   - Token usage
+   - Results/outputs
+   - Timestamp
 
-4. **Content Delivery**
-   - Present material
-   - Adapt based on feedback
-   - Answer learner questions
-   - Provide guidance
+3. **Derived metrics**
+   - Session quality score
+   - Total tokens used
+   - Interaction count
+   - Duration
+   - Categories covered
 
-5. **Assessment**
-   - Evaluate understanding
-   - Measure knowledge gain
-   - Identify gaps
-   - Update profile
+## Pattern Detection
 
-6. **Adaptation**
-   - Adjust difficulty
-   - Modify pacing
-   - Change approach if needed
-   - Generate feedback
+### Behavioral Patterns
+- Repeated interaction types
+- Preferred question styles
+- Decision-making patterns
+- Error recovery patterns
+- Knowledge application patterns
+
+### Learning Styles
+- Data-driven: Prefers metrics and numbers
+- Visual: Prefers diagrams and visualizations
+- Strategic: Focuses on goals and planning
+- Tactical: Focuses on immediate actions
+- Collaborative: Seeks feedback and discussion
+
+### Anomalies
+- Unusual token usage
+- Quality deviations
+- Unexpected error rates
+- Behavioral changes
+- Performance degradation
+
+## Recommendations Generation
+
+Based on learning data:
+
+### Quality Improvements
+- Identify weak areas (quality < threshold)
+- Suggest training/retraining
+- Recommend skill development
+- Propose workflow improvements
+
+### Optimization Suggestions
+- Reduce token usage
+- Improve quality scores
+- Accelerate learning
+- Better error handling
+
+### Fine-tuning Opportunities
+- Collect high-quality examples
+- Identify training categories
+- Suggest model improvements
+- Recommend specialized variants
+
+## Fine-tuning Data Export
+
+### Export Process
+
+1. **Collect Sessions**
+   - Select sessions for export
+   - Filter by quality threshold
+   - Group by category
+
+2. **Format Data**
+   - Convert to training format
+   - Include metadata
+   - Validate completeness
+
+3. **Export to File**
+   - JSONL format (one example per line)
+   - Include quality scores
+   - Include category tags
+   - Include source information
+
+### Export Format
+
+```jsonl
+{"input": "question", "output": "response", "quality": 0.95, "category": "architecture"}
+{"input": "question", "output": "response", "quality": 0.92, "category": "performance"}
+```
+
+### Use Cases
+
+- **OpenAI Fine-tuning API**
+  - Upload exported data
+  - Train specialized model variant
+  - Evaluate on test set
+
+- **Custom Training**
+  - Use exported data for in-house model training
+  - Track improvement metrics
+  - Iterate with new examples
 
 ## Integration Points
 
-### socrates-nexus
-- Content generation
-- Question creation
-- Explanation generation
-- Performance assessment
+### With socratic-nexus (LLM Client)
+- Track LLM API calls
+- Log token usage per interaction
+- Monitor quality of LLM outputs
+- Collect examples for fine-tuning
 
-### socratic-analyzer
-- Response evaluation
-- Quality assessment
-- Gap identification
+### With socratic-agents (Agent Framework)
+- Track agent task completion
+- Learn from agent behaviors
+- Improve agent skill selection
+- Recommend agent specializations
 
-## Learning Strategies
+### With socratic-workflow (Task Management)
+- Track workflow execution quality
+- Learn from workflow patterns
+- Recommend workflow improvements
+- Predict task duration
 
-- Mastery learning
-- Adaptive difficulty
-- Personalized pacing
-- Multiple learning styles
-- Competency-based progression
+### With socratic-maturity (Maturity Tracking)
+- Track maturity improvement speed
+- Identify effective strategies
+- Recommend phase progression
+- Learn optimal workflows per phase
 
-## Performance Metrics
+## Performance Characteristics
 
-- Learning efficiency
-- Content mastery
-- Time per concept
-- Error rates
-- Knowledge retention
+- **Session Creation**: O(1)
+- **Interaction Recording**: O(1)
+- **Pattern Detection**: O(n) where n = interactions
+- **Recommendation Generation**: O(n) or O(n log n)
+- **Export**: O(n) for n sessions
 
-## Analytics Features
+## Memory Management
 
-- Progress dashboards
-- Performance reports
-- Learning curve analysis
-- Gap analysis
-- Outcome prediction
+- Sessions are immutable once completed
+- Streaming pattern detection
+- Lazy recommendation generation
+- Batched export operations
 
-## Personalization Dimensions
+## Data Retention
 
-- Difficulty level
-- Pacing speed
-- Example types
-- Practice intensity
-- Feedback style
+- Active sessions: In memory
+- Completed sessions: Persistent storage
+- Historical data: Queryable archive
+- Export data: Separated for fine-tuning
 
 ---
 
-Part of the Socratic Ecosystem
+Part of the Socratic Ecosystem | Learning-Driven Improvement | Fine-tuning Ready
