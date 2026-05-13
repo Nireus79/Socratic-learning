@@ -1,5 +1,11 @@
 # Socratic Learning
 
+[![PyPI](https://img.shields.io/pypi/v/socratic-learning.svg)](https://pypi.org/project/socratic-learning/)
+[![Downloads](https://img.shields.io/pypi/dm/socratic-learning.svg)](https://pypi.org/project/socratic-learning/)
+[![GitHub](https://img.shields.io/github/stars/Nireus79/Socratic-learning.svg?style=social)](https://github.com/Nireus79/Socratic-learning)
+[![License](https://img.shields.io/github/license/Nireus79/Socratic-learning.svg)](LICENSE)
+
+
 [![PyPI version](https://badge.fury.io/py/socratic-learning.svg)](https://badge.fury.io/py/socratic-learning)
 [![Tests](https://github.com/Nireus79/Socratic-learning/workflows/Tests/badge.svg)](https://github.com/Nireus79/Socratic-learning/actions)
 [![Code Quality](https://github.com/Nireus79/Socratic-learning/workflows/Code%20Quality/badge.svg)](https://github.com/Nireus79/Socratic-learning/actions)
@@ -183,3 +189,34 @@ Your support helps fund development of the entire Socratic ecosystem.
 - ✅ SQLite storage
 - ✅ Unit tests
 - 🚀 Phase 2-6 planned
+
+
+---
+
+## Part of Socrates AI Ecosystem
+
+This package is a component of [**Socrates AI**](https://github.com/Nireus79/Socrates), a production-ready platform for building intelligent multi-agent systems with constitutional governance.
+
+### Use This Package Standalone:
+```bash
+pip install socratic-learning
+```
+
+### Or As Part of Socrates Platform:
+```bash
+pip install socrates-ai  # Includes 37+ modules + all 11 packages
+```
+
+### Integration Example:
+
+See the [**Socrates ECOSYSTEM.md**](https://github.com/Nireus79/Socrates/blob/main/ECOSYSTEM.md#layer-2-specialized-libraries) for detailed integration examples showing how to use socratic-learning with other Socratic packages.
+
+**Related packages you might use together:**
+- See [Complete Package Map](https://github.com/Nireus79/Socrates/blob/main/ECOSYSTEM.md)
+
+### More Information:
+- 📖 [Full Socrates Documentation](https://github.com/Nireus79/Socrates/tree/main/docs)
+- 🏗️ [Complete Architecture Guide](https://github.com/Nireus79/Socrates/blob/main/ECOSYSTEM.md)
+- 💬 [Socrates Discussions](https://github.com/Nireus79/Socrates/discussions)
+
+---
