@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: socratic-learning
-Version: 0.1.3
+Version: 0.2.1
 Summary: Continuous learning system that tracks agent interactions, detects patterns, and provides improvement recommendations.
 Author: Socratic Learning Contributors
 License-Expression: MIT
@@ -23,6 +23,8 @@ Requires-Python: >=3.9
 Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: pydantic>=2.0.0
+Requires-Dist: numpy>=1.20.0
+Requires-Dist: scikit-learn>=1.0.0
 Provides-Extra: agents
 Requires-Dist: socratic-agents>=0.1.3; extra == "agents"
 Provides-Extra: rag
@@ -30,15 +32,17 @@ Requires-Dist: socratic-rag>=0.1.0; extra == "rag"
 Provides-Extra: workflow
 Requires-Dist: socratic-workflow>=0.1.1; extra == "workflow"
 Provides-Extra: nexus
-Requires-Dist: socrates-nexus>=0.3.1; extra == "nexus"
+Requires-Dist: socratic-nexus>=0.3.6; extra == "nexus"
 Provides-Extra: openclaw
 Provides-Extra: langchain
 Requires-Dist: langchain>=0.1.0; extra == "langchain"
+Provides-Extra: langraph
+Requires-Dist: langgraph>=0.0.1; extra == "langraph"
 Provides-Extra: all
 Requires-Dist: socratic-agents>=0.1.3; extra == "all"
 Requires-Dist: socratic-rag>=0.1.0; extra == "all"
 Requires-Dist: socratic-workflow>=0.1.1; extra == "all"
-Requires-Dist: socrates-nexus>=0.3.1; extra == "all"
+Requires-Dist: socratic-nexus>=0.3.6; extra == "all"
 Requires-Dist: langchain>=0.1.0; extra == "all"
 Provides-Extra: dev
 Requires-Dist: pytest>=7.0; extra == "dev"
@@ -50,6 +54,12 @@ Requires-Dist: mypy>=1.0; extra == "dev"
 Dynamic: license-file
 
 # Socratic Learning
+
+[![PyPI](https://img.shields.io/pypi/v/socratic-learning.svg)](https://pypi.org/project/socratic-learning/)
+[![Downloads](https://img.shields.io/pypi/dm/socratic-learning.svg)](https://pypi.org/project/socratic-learning/)
+[![GitHub](https://img.shields.io/github/stars/Nireus79/Socratic-learning.svg?style=social)](https://github.com/Nireus79/Socratic-learning)
+[![License](https://img.shields.io/github/license/Nireus79/Socratic-learning.svg)](LICENSE)
+
 
 [![PyPI version](https://badge.fury.io/py/socratic-learning.svg)](https://badge.fury.io/py/socratic-learning)
 [![Tests](https://github.com/Nireus79/Socratic-learning/workflows/Tests/badge.svg)](https://github.com/Nireus79/Socratic-learning/actions)
@@ -234,3 +244,34 @@ Your support helps fund development of the entire Socratic ecosystem.
 - ✅ SQLite storage
 - ✅ Unit tests
 - 🚀 Phase 2-6 planned
+
+
+---
+
+## Part of Socrates AI Ecosystem
+
+This package is a component of [**Socrates AI**](https://github.com/Nireus79/Socrates), a production-ready platform for building intelligent multi-agent systems with constitutional governance.
+
+### Use This Package Standalone:
+```bash
+pip install socratic-learning
+```
+
+### Or As Part of Socrates Platform:
+```bash
+pip install socrates-ai  # Includes 37+ modules + all 11 packages
+```
+
+### Integration Example:
+
+See the [**Socrates ECOSYSTEM.md**](https://github.com/Nireus79/Socrates/blob/main/ECOSYSTEM.md#layer-2-specialized-libraries) for detailed integration examples showing how to use socratic-learning with other Socratic packages.
+
+**Related packages you might use together:**
+- See [Complete Package Map](https://github.com/Nireus79/Socrates/blob/main/ECOSYSTEM.md)
+
+### More Information:
+- 📖 [Full Socrates Documentation](https://github.com/Nireus79/Socrates/tree/main/docs)
+- 🏗️ [Complete Architecture Guide](https://github.com/Nireus79/Socrates/blob/main/ECOSYSTEM.md)
+- 💬 [Socrates Discussions](https://github.com/Nireus79/Socrates/discussions)
+
+---
