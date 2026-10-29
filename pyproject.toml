@@ -9,7 +9,7 @@ description = "Continuous learning system that tracks agent interactions, detect
 readme = "README.md"
 license = "MIT"
 authors = [
-    {name = "Socratic Learning Contributors"}
+    {name = "Efthimios Angelopoulos", email = "Hermes_creative@proton.me"}
 ]
 keywords = [
     "learning",
