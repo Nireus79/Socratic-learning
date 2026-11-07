@@ -20,7 +20,7 @@ Most AI platforms treat learning as an afterthought. Socratic Learning makes con
 - **Pattern Detection** - Automatically identify recurring patterns in agent behaviors and model outputs
 - **Performance Monitoring** - Track success rates, response times, and costs across all interactions
 - **Data-Driven Recommendations** - Get actionable improvement suggestions based on detected patterns
-- **Fine-Tuning Ready** - Export interaction data in industry-standard formats for model fine-tuning
+- **Export** - Export interaction data for model fine-tuning
 
 A continuous learning system for AI agents that tracks interactions, detects patterns, and provides data-driven improvement recommendations.
 
